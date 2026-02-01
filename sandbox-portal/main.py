@@ -306,6 +306,19 @@ async def list_applications(api_key: str = Depends(verify_api_key)):
     """List all submitted applications (for testing/demo purposes)."""
     return _read_applications()
 
+@app.delete("/sandbox/applications/{application_id}")
+async def delete_application(application_id: str, api_key: str = Depends(verify_api_key)):
+    """Delete an application by ID."""
+    applications = _read_applications()
+    initial_len = len(applications)
+    applications = [a for a in applications if a.get("id") != application_id]
+    
+    if len(applications) < initial_len:
+        _write_applications(applications)
+        return {"success": True, "message": "Application deleted"}
+    
+    raise HTTPException(status_code=404, detail="Application not found")
+
 # ============================================================
 # Seed Data Generation
 # ============================================================

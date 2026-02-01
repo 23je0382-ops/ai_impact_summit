@@ -80,6 +80,57 @@ async def get_profile():
     profile = load_student_profile()
     if profile is None:
         return None
+    
+    # Transform legacy nested format to flat format if needed
+    if "personal_info" in profile:
+        personal_info = profile.get("personal_info", {})
+        links = profile.get("links", {})
+        
+        transformed = {
+            "name": personal_info.get("name", ""),
+            "email": personal_info.get("email", "").replace("#", ""),  # Remove # if present
+            "phone": personal_info.get("phone"),
+            "location": personal_info.get("location"),
+            "linkedin_url": links.get("linkedin"),
+            "github_url": links.get("github"),
+            "portfolio_url": links.get("portfolio"),
+            "summary": profile.get("summary", ""),
+            "skills": profile.get("skills", []),
+            "education": [
+                {
+                    "institution": edu.get("institution", ""),
+                    "degree": edu.get("degree", ""),
+                    "field_of_study": edu.get("field_of_study"),
+                    "start_year": edu.get("start_year"),
+                    "end_year": edu.get("end_year"),
+                    "gpa": float(str(edu.get("gpa", "0")).split("/")[0]) if edu.get("gpa") else None
+                }
+                for edu in profile.get("education", [])
+            ],
+            "experience": [
+                {
+                    "company": exp.get("company", ""),
+                    "title": exp.get("title", ""),
+                    "location": exp.get("location"),
+                    "start_date": exp.get("start_date"),
+                    "end_date": exp.get("end_date"),
+                    "current": exp.get("current", False),
+                    "description": exp.get("description")
+                }
+                for exp in profile.get("experience", [])
+            ],
+            "certifications": profile.get("certifications", []),
+            "languages": profile.get("languages", []),
+            "preferred_job_types": profile.get("preferred_job_types", []),
+            "preferred_locations": profile.get("preferred_locations", []),
+            "remote_preference": profile.get("remote_preference"),
+            "expected_salary_min": profile.get("expected_salary_min"),
+            "expected_salary_max": profile.get("expected_salary_max"),
+            "created_at": profile.get("created_at"),
+            "updated_at": profile.get("updated_at")
+        }
+        return transformed
+    
     return profile
 
 

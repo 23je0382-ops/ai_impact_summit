@@ -9,9 +9,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 import math
 
-from groq import Groq
-
-from app.config import settings
+from app.services.llm_client import generate_text, LLMClientError
 from app.logging_config import get_logger
 from app.services.bullet_storage import get_all_bullets
 from app.services.data_store import get_job_by_id, load_student_profile
@@ -119,54 +117,72 @@ def tailor_resume(job_id: str, profile_data: Optional[Dict[str, Any]] = None) ->
                  if selected_bullets_text is None:
                      selected_bullets_text = []
             
-            # Reword using LLM
-            reworded_bullets = []
-            client = Groq(api_key=settings.groq_api_key)
-            
-            for bullet_text in selected_bullets_text:
-                if not bullet_text:
-                    continue
+            # Batch Optimization: Process all bullets for this role in ONE call
+            if not selected_bullets_text:
+                continue
+
+            try:
+                # 1. Optimize all bullets in one go
+                bullets_block = json.dumps(selected_bullets_text)
+                prompt = f"""
+                You are an expert Resume Optimizer. Optimize the following list of bullet points for a "{job.get('title')}" role.
+                
+                INPUT BULLETS:
+                {bullets_block}
+                
+                TARGET KEYWORDS to naturally integrate:
+                {', '.join(keywords_list[:8])}
+                
+                INSTRUCTIONS:
+                1. Return a JSON List of strings.
+                2. Maintain the exact same number of bullets.
+                3. Keep the factual core (numbers, achievements) identical.
+                4. Improve professional tone and impact.
+                5. Do NOT hallucinate new skills or numbers.
+                
+                OUTPUT JSON ONLY:
+                ["optimized bullet 1", "optimized bullet 2", ...]
+                """
+                
+                from app.services.llm_client import generate_json
+                response = generate_json(prompt, temperature=0.3)
+                
+                # Parse Response
+                import json
                 try:
-                    # Only reword if there's a good reason
-                    prompt = f"""
-                    Reword this resume bullet to include these keywords naturally if they apply, without lying.
-                    Original: {bullet_text}
-                    Keywords: {', '.join(keywords_list[:5])}
-                    Keep it concise (1 sentence).
-                    """
+                    reworded_bullets = json.loads(response)
+                    # Basic validation
+                    if not isinstance(reworded_bullets, list):
+                         reworded_bullets = selected_bullets_text
+                except:
+                    reworded_bullets = selected_bullets_text
+
+                # 2. Batch Verification (One check for the whole role)
+                # Verify the *collection* of new bullets against the profile context
+                # We can't verify 1-to-1 easily in batch without complex logic, 
+                # but we can verify the *set* doesn't contain hallucinations relative to the *original set*?
+                # Actually, simplest safe optimization is to verify individually or trust strict system prompt.
+                # To maintain speed, we'll do a "Spot Check" or "Bulk Check".
+                
+                # For high performance with "reasonable" safety:
+                # We will skip per-bullet verification and rely on the "Do NOT hallucinate" instruction 
+                # plus a single "Fact Check" call on the whole block found in new_text.
+                
+                verify_text = "\n".join(reworded_bullets)
+                verification = verify_content(verify_text, context_type="resume_experience_block")
+                
+                if not verification.get("is_grounded", False):
+                    logger.warning(f"Batch optimization flagged as hallucinated. Reverting to original. Reason: {verification.get('reasonheading')}")
+                    final_bullets = selected_bullets_text
+                else:
+                    final_bullets = reworded_bullets
                     
-                    completion = client.chat.completions.create(
-                        model="llama-3.1-8b-instant",
-                        messages=[{"role": "user", "content": prompt}],
-                        temperature=0.3,
-                        max_tokens=60
-                    )
-                    
-                    new_text = completion.choices[0].message.content.strip()
-                    if new_text != bullet_text:
-                        # Verify the reworded text
-                        verification = verify_content(new_text, context_type="resume_bullet")
-                        
-                        if verification.get("is_grounded", False):
-                            change_log.append({
-                                "original": bullet_text,
-                                "new": new_text,
-                                "reason": "Keyword optimization"
-                            })
-                            reworded_bullets.append(new_text)
-                        else:
-                            logger.warning(f"Reworded bullet rejected due to grounding failure: {new_text} | Hallucinations: {verification.get('hallucinations')}")
-                            # Fallback to original if hallucinated
-                            reworded_bullets.append(bullet_text)
-                    else:
-                        reworded_bullets.append(bullet_text)
-                        
-                except Exception as e:
-                    logger.error(f"Error rewording bullet: {e}")
-                    reworded_bullets.append(bullet_text)
-            
+            except Exception as e:
+                logger.error(f"Batch optimization failed: {e}")
+                final_bullets = selected_bullets_text
+
             exp_copy = exp.copy()
-            exp_copy["responsibilities"] = reworded_bullets
+            exp_copy["responsibilities"] = final_bullets
             tailored_experience.append(exp_copy)
             
         # 5. Tailor Skills Section

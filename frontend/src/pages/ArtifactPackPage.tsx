@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
 
 // API base URL
@@ -53,7 +53,7 @@ export default function ArtifactPackPage() {
 
     // Data state for each step
     const [resumeFile, setResumeFile] = useState<File | null>(null);
-    const [, setResumeId] = useState<string | null>(null);
+    const [resumeId, setResumeId] = useState<string | null>(null);
     const [profileData, setProfileData] = useState<ProfileData | null>(null);
     const [bullets, setBullets] = useState<Bullet[]>([]);
     const [answers, setAnswers] = useState<Answer[]>([]);
@@ -61,6 +61,48 @@ export default function ArtifactPackPage() {
 
     // Completion status
     const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
+
+    // ========== Persistence Logic ==========
+    const STORAGE_KEY = 'artifact_pack_builder_state_v1';
+
+    // Load state from localStorage on mount
+    useEffect(() => {
+        const savedState = localStorage.getItem(STORAGE_KEY);
+        if (savedState) {
+            try {
+                const parsed = JSON.parse(savedState);
+                if (parsed.currentStep) setCurrentStep(parsed.currentStep);
+                if (parsed.resumeId) setResumeId(parsed.resumeId);
+                if (parsed.profileData) setProfileData(parsed.profileData);
+                if (parsed.bullets) setBullets(parsed.bullets);
+                if (parsed.answers) setAnswers(parsed.answers);
+                if (parsed.proofItems) setProofItems(parsed.proofItems);
+                if (parsed.completedSteps) setCompletedSteps(new Set(parsed.completedSteps));
+            } catch (e) {
+                console.error('Failed to restore state', e);
+            }
+        }
+    }, []);
+
+    // Save state to localStorage on changes
+    useEffect(() => {
+        const stateToSave = {
+            currentStep,
+            resumeId, // We persist the ID, but not the file object
+            profileData,
+            bullets,
+            answers,
+            proofItems,
+            completedSteps: Array.from(completedSteps)
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
+    }, [currentStep, resumeId, profileData, bullets, answers, proofItems, completedSteps]);
+
+    // Clear state when explicitly starting over (optional helper)
+    const clearSavedState = () => {
+        localStorage.removeItem(STORAGE_KEY);
+        window.location.reload();
+    };
 
 
     // ========== Step 1: Resume Upload ==========
@@ -100,7 +142,12 @@ export default function ArtifactPackPage() {
             });
 
             setResumeId(response.data.id);
-            setCompletedSteps(prev => new Set([...prev, 1]));
+            // Reset derived state for new resume
+            setProfileData(null);
+            setBullets([]);
+            setAnswers([]);
+            setProofItems([]);
+            setCompletedSteps(new Set([1])); // Only step 1 is complete now
             setCurrentStep(2);
 
             // Auto-extract profile
@@ -112,7 +159,10 @@ export default function ArtifactPackPage() {
         }
     };
 
+
+
     // ========== Step 2: Extract Profile ==========
+    // ... existing extractProfile function ...
     const extractProfile = async (id: string) => {
         setIsLoading(true);
         try {
@@ -122,7 +172,20 @@ export default function ArtifactPackPage() {
             setProfileData(response.data.profile);
             setCompletedSteps(prev => new Set([...prev, 2]));
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Failed to extract profile');
+            console.error('Profile extraction error:', err);
+            let msg = 'Failed to extract profile';
+            if (err.response) {
+                if (err.response.status === 422) {
+                    msg = `Extraction Failed: ${err.response.data.detail}`;
+                } else if (err.response.status === 400) {
+                    msg = err.response.data.detail || 'Resume file problem.';
+                } else {
+                    msg = `Server Error (${err.response.status}): ${err.response.data.detail || 'Unknown error'}`;
+                }
+            } else if (err.request) {
+                msg = 'Network error. Please check your connection.';
+            }
+            setError(msg);
         } finally {
             setIsLoading(false);
         }
@@ -164,7 +227,10 @@ export default function ArtifactPackPage() {
 
     // ========== Step 4: Generate Answers ==========
     const generateAnswers = async () => {
-        if (!profileData) return;
+        if (!profileData) {
+            setError('Profile data is missing. Please restart the process.');
+            return;
+        }
 
         setIsLoading(true);
         setError(null);
@@ -180,7 +246,8 @@ export default function ArtifactPackPage() {
             setCompletedSteps(prev => new Set([...prev, 4]));
             setCurrentStep(5);
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Failed to generate answers');
+            console.error('Answer generation failed:', err);
+            setError(err.response?.data?.detail || 'Failed to generate answers. Please try again.');
         } finally {
             setIsLoading(false);
         }
@@ -324,6 +391,15 @@ export default function ArtifactPackPage() {
                             {(resumeFile.size / 1024).toFixed(1)} KB
                         </p>
                     </div>
+                ) : resumeId ? (
+                    // Restored state: We have an ID but lost the file object
+                    <div className="space-y-2">
+                        <div className="text-5xl text-blue-500">📄</div>
+                        <p className="text-lg font-medium text-blue-700">Resume Uploaded (Restored)</p>
+                        <p className="text-sm text-blue-600">
+                            Ready to re-process if needed
+                        </p>
+                    </div>
                 ) : (
                     <div className="space-y-2">
                         <div className="text-5xl">📤</div>
@@ -335,10 +411,10 @@ export default function ArtifactPackPage() {
 
             <button
                 onClick={uploadResume}
-                disabled={!resumeFile || isLoading}
+                disabled={(!resumeFile && !resumeId) || isLoading}
                 className="w-full py-3 px-6 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
-                {isLoading ? 'Uploading...' : 'Upload & Extract Profile'}
+                {isLoading ? 'Uploading...' : resumeId && !resumeFile ? 'Continue with Existing Resume' : 'Upload & Extract Profile'}
             </button>
         </div>
     );
@@ -484,7 +560,7 @@ export default function ArtifactPackPage() {
                 </button>
                 <button
                     onClick={generateAnswers}
-                    disabled={isLoading}
+                    disabled={!profileData || isLoading}
                     className="flex-1 py-3 px-6 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                     {isLoading ? 'Generating...' : 'Generate Answers'}

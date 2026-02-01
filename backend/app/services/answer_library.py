@@ -13,9 +13,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from groq import Groq
-
-from app.config import settings
+from app.services.llm_client import generate_json, LLMClientError
 from app.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -168,9 +166,6 @@ def generate_answers(
     Raises:
         AnswerGenerationError: If generation fails.
     """
-    if not settings.groq_api_key:
-        raise AnswerGenerationError("GROQ_API_KEY not configured")
-    
     # Default to all categories if not specified
     if not categories:
         categories = list(QUESTION_CATEGORIES.keys())
@@ -194,31 +189,18 @@ def generate_answers(
         constraints_text = json.dumps(constraints, indent=2)
     
     try:
-        client = Groq(api_key=settings.groq_api_key)
-        
         prompt = ANSWER_GENERATION_PROMPT.format(
             profile_data=json.dumps(profile_for_prompt, indent=2),
             constraints=constraints_text,
             questions=questions_text,
         )
         
-        completion = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[
-                {
-                    "role": "system",
-                    "content": "You are a career advisor. Generate professional, factual answers. Return only valid JSON."
-                },
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
-            temperature=0.3,
-            max_tokens=3000,
+        # Call Gemini API via llm_client
+        response_text = generate_json(
+            prompt=prompt,
+            system_prompt="You are a career advisor. Generate professional, factual answers. Return only valid JSON.",
+            temperature=0.3
         )
-        
-        response_text = completion.choices[0].message.content.strip()
         
         # Extract JSON from response
         json_match = re.search(r'```(?:json)?\s*([\s\S]*?)\s*```', response_text)
@@ -229,7 +211,12 @@ def generate_answers(
             raw_answers = json.loads(response_text)
         except json.JSONDecodeError as e:
             logger.error(f"Failed to parse LLM response: {e}")
-            raise AnswerGenerationError("Failed to parse generated answers")
+            raw_answers = {}
+            
+        # Ensure raw_answers is a dict
+        if not isinstance(raw_answers, dict):
+            logger.warning(f"Expected dict for answers, got {type(raw_answers)}")
+            raw_answers = {}
         
         # Process and enrich answers
         processed_answers = {}
@@ -258,6 +245,8 @@ def generate_answers(
         logger.info(f"Generated {len(processed_answers)} answers")
         return processed_answers
         
+    except LLMClientError as e:
+        raise AnswerGenerationError(str(e))
     except AnswerGenerationError:
         raise
     except Exception as e:

@@ -307,8 +307,14 @@ async def rank_jobs(request: JobRankRequest):
     from app.services.job_ranker import rank_jobs as service_rank_jobs
     from app.services.job_ranker import add_to_apply_queue
     
-    # Get currently stored new jobs
+    # Get currently stored jobs
+    # First try 'new' jobs, then fallback to all if search just happened
     jobs = get_stored_jobs(status="new", limit=100)
+    
+    if not jobs:
+        # Fallback: if we just searched, the jobs might be in the system but status='new' check failed 
+        # for some reason, or we want to rank EVERYTHING available.
+        jobs = get_stored_jobs(status=None, limit=100)
     
     if not jobs:
         return JobRankResponse(ranked_jobs=[], queued_count=0)
@@ -334,3 +340,24 @@ async def rank_jobs(request: JobRankRequest):
         ranked_jobs=top_matches,
         queued_count=queued_count
     )
+
+@router.post("/queue/{job_id}")
+async def queue_job_endpoint(job_id: str):
+    """
+    Manually add a specific job to the apply queue.
+    """
+    from app.services.data_store import get_job_by_id
+    from app.services.job_ranker import add_to_apply_queue
+    
+    job = get_job_by_id(job_id)
+    if not job:
+        # Check storage if not in main db
+        from app.services.job_search import get_stored_jobs
+        all_jobs = get_stored_jobs(status=None, limit=500)
+        job = next((j for j in all_jobs if j["id"] == job_id), None)
+        
+    if not job:
+        raise HTTPException(status_code=404, detail="Job not found")
+        
+    added = add_to_apply_queue([job])
+    return {"success": True, "added": added > 0}

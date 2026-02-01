@@ -11,9 +11,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 import math
 
-from groq import Groq
-
-from app.config import settings
+from app.services.llm_client import generate_text, LLMClientError
 from app.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -129,10 +127,8 @@ def calculate_constraint_score(
     return score / total_checks
 
 def generate_match_reasoning(job: Dict[str, Any], profile: Dict[str, Any]) -> str:
-    """Generate reasoning using Groq LLM."""
+    """Generate reasoning using Gemini LLM."""
     try:
-        client = Groq(api_key=settings.groq_api_key)
-        
         job_summary = f"{job['title']} at {job['company']}. Skills: {', '.join(job.get('skills_required', [])[:5])}."
         profile_summary = f"Skills: {', '.join(profile.get('skills', [])[:5])}, Experience: {len(profile.get('experience', []))} roles."
         
@@ -143,14 +139,12 @@ def generate_match_reasoning(job: Dict[str, Any], profile: Dict[str, Any]) -> st
         Focus on skill overlap and fit.
         """
         
-        completion = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
-            messages=[{"role": "user", "content": prompt}],
+        # Call Gemini API via llm_client
+        return generate_text(
+            prompt=prompt,
             temperature=0.3,
             max_tokens=100
         )
-        
-        return completion.choices[0].message.content.strip()
     except Exception as e:
         logger.error(f"LLM reasoning failed: {e}")
         return "Matched based on skill overlap and role requirements."

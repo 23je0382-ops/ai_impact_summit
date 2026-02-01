@@ -8,8 +8,7 @@ to prevent hallucinations and ensure factual accuracy.
 
 import json
 from typing import Dict, Any, List, Optional
-from groq import Groq
-from app.config import settings
+from app.services.llm_client import generate_json, LLMClientError
 from app.services.data_store import load_student_profile
 from app.logging_config import get_logger
 
@@ -80,19 +79,30 @@ def verify_content(content: str, context_type: str = "general") -> Dict[str, Any
         }}
         """
         
-        client = Groq(api_key=settings.groq_api_key)
-        completion = client.chat.completions.create(
-            model="llama-3.1-8b-instant", # Fast model for verification
-            messages=[
-                {"role": "system", "content": "You are a JSON-only outputting Fact Checker."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.0,
-            response_format={"type": "json_object"}
+        # Call Gemini API via llm_client
+        response_text = generate_json(
+            prompt=prompt,
+            system_prompt="You are a JSON-only outputting Fact Checker.",
+            temperature=0.0
         )
         
-        result = json.loads(completion.choices[0].message.content)
+        # Handle markdown code blocks if present
+        import re
+        json_match = re.search(r'```(?:json)?\s*([\s\S]*?)\s*```', response_text)
+        if json_match:
+            response_text = json_match.group(1)
         
+        try:
+            result = json.loads(response_text)
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse grounding JSON: {e}")
+            result = {}
+            
+        # Ensure result is a dict
+        if not isinstance(result, dict):
+            logger.warning(f"Expected dict for grounding, got {type(result)}")
+            result = {}
+            
         score = result.get("score", 0)
         threshold = 70 # Strictness threshold
         

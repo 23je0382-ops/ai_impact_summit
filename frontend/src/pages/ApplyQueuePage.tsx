@@ -54,7 +54,6 @@ export default function ApplyQueuePage() {
     }
 
     const handleStartBatch = async () => {
-        if (!confirm("Start autonomous application process? This will apply to jobs in the queue based on your policy settings.")) return
         try {
             await api.startBatchProcessing()
             loadBatchStatus()
@@ -73,7 +72,6 @@ export default function ApplyQueuePage() {
     }
 
     const handleRemoveFromQueue = async (jobId: string) => {
-        if (!confirm("Remove this job from the queue?")) return
         try {
             await api.removeFromApplyQueue(jobId)
             setQueue(queue.filter(j => j.id !== jobId))
@@ -108,17 +106,14 @@ export default function ApplyQueuePage() {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Header */}
-            <header className="bg-white shadow-sm sticky top-0 z-50">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                {/* Header Card */}
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6 flex items-center justify-between sticky top-8 z-40 backdrop-blur-md bg-white/90">
                     <div className="flex items-center gap-4">
-                        <Link to="/dashboard" className="text-gray-500 hover:text-gray-700">← Back</Link>
+                        <Link to="/dashboard" className="text-gray-500 hover:text-gray-700 font-medium">← Back</Link>
                         <h1 className="text-2xl font-bold text-gray-900">Application Queue</h1>
                     </div>
                 </div>
-            </header>
-
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {error && (
                     <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 flex items-center gap-2">
                         <NoSymbolIcon className="w-5 h-5" />
@@ -128,7 +123,7 @@ export default function ApplyQueuePage() {
                 )}
 
                 {/* Batch Controls */}
-                <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-100">
+                <div className="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-200">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                         <div className="flex-1 w-full">
                             <h2 className="text-lg font-semibold text-gray-900 mb-2">Autonomous Batch Processor</h2>

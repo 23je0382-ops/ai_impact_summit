@@ -39,7 +39,7 @@ class Settings(BaseSettings):
     # Logging
     log_level: str = "INFO"
 
-    # Groq API Key for LLM Profile Extraction
+    # Groq API for LLM calls
     groq_api_key: str = ""
 
 

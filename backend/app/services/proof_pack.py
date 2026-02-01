@@ -13,9 +13,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from groq import Groq
-
-from app.config import settings
+from app.services.llm_client import generate_json, LLMClientError
 from app.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -98,51 +96,19 @@ def build_proof_pack_from_profile(profile_data: Dict[str, Any]) -> List[Dict[str
     Raises:
         ProofPackError: If generation fails.
     """
-    if not settings.groq_api_key:
-        raise ProofPackError("GROQ_API_KEY not configured")
-    
-    # Check if there are any links to extract
-    has_links = False
-    if profile_data.get("links"):
-        for val in profile_data["links"].values():
-            if val:
-                has_links = True
-                break
-    
-    if not has_links and profile_data.get("projects"):
-        for proj in profile_data["projects"]:
-            # Could look for URLs in descriptions too, but primarily checking explicit project structure if we had one
-            # For now, let LLM decide if it can find artifacts in project descriptions/technologies
-            has_links = True # Assume LLM might find something
-            break
-            
     try:
-        client = Groq(api_key=settings.groq_api_key)
-        
         # Prepare profile for prompt
         profile_for_prompt = {
             k: v for k, v in profile_data.items()
             if not k.startswith("_")
         }
         
-        # Call Groq API
-        completion = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[
-                {
-                    "role": "system",
-                    "content": "You are a precise technical recruiter. Identify and describe proof of work artifacts from the profile. Return ONLY valid JSON array."
-                },
-                {
-                    "role": "user",
-                    "content": PROOF_PACK_PROMPT.format(profile_data=json.dumps(profile_for_prompt, indent=2))
-                }
-            ],
-            temperature=0.2,
-            max_tokens=2000,
+        # Call Gemini API via llm_client
+        response_text = generate_json(
+            prompt=PROOF_PACK_PROMPT.format(profile_data=json.dumps(profile_for_prompt, indent=2)),
+            system_prompt="You are a precise technical recruiter. Identify and describe proof of work artifacts from the profile. Return ONLY valid JSON array.",
+            temperature=0.2
         )
-        
-        response_text = completion.choices[0].message.content.strip()
         
         # Extract JSON
         json_match = re.search(r'```(?:json)?\s*([\s\S]*?)\s*```', response_text)
@@ -196,6 +162,10 @@ def build_proof_pack_from_profile(profile_data: Dict[str, Any]) -> List[Dict[str
         logger.info(f"Built Proof Pack with {len(processed_items)} items")
         return processed_items
         
+    except LLMClientError as e:
+        raise ProofPackError(str(e))
+    except ProofPackError:
+        raise
     except Exception as e:
         logger.error(f"Proof Pack construction failed: {e}")
         raise ProofPackError(f"Generation failed: {str(e)}")

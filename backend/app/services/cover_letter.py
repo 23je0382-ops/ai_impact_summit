@@ -13,9 +13,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 import traceback
 
-from groq import Groq
-
-from app.config import settings
+from app.services.llm_client import generate_text, LLMClientError
 from app.logging_config import get_logger
 from app.services.data_store import get_job_by_id, load_student_profile
 from app.services.job_search import get_stored_jobs
@@ -120,18 +118,12 @@ def generate_cover_letter(job_id: str, profile_data: Optional[Dict[str, Any]] = 
         Start with "Dear Hiring Team," (or specific name if known).
         """
         
-        client = Groq(api_key=settings.groq_api_key)
-        completion = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[
-                {"role": "system", "content": "You are an expert career coach writing a cover letter."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.7,
-            max_tokens=600
+        # Call Gemini API via llm_client
+        cover_letter_text = generate_text(
+            prompt=prompt,
+            system_prompt="You are an expert career coach writing a cover letter.",
+            temperature=0.7
         )
-        
-        cover_letter_text = completion.choices[0].message.content.strip()
         
         # Verify Grounding
         verification = verify_content(cover_letter_text, context_type="cover_letter")

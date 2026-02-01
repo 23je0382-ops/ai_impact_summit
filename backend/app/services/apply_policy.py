@@ -34,7 +34,7 @@ _policy_lock = threading.RLock()
 
 # Defaults
 DEFAULT_POLICY = {
-    "daily_limit": 10,
+    "daily_limit": 0,
     "min_match_score": 60,
     "blocked_companies": [],
     "paused": False,
@@ -194,10 +194,12 @@ def check_application_policy(job_id: str) -> Dict[str, Any]:
         if app_date and app_date.startswith(today_str):
             day_count += 1
             
-    if day_count >= policy.get("daily_limit", 10):
+    limit = policy.get("daily_limit", 10)
+    # 0 or None means infinite/no limit
+    if limit is not None and limit > 0 and day_count >= limit:
         return {
             "allowed": False,
-            "reason": f"Daily limit reached ({day_count}/{policy.get('daily_limit')})",
+            "reason": f"Daily limit reached ({day_count}/{limit})",
             "policy_snapshot": policy
         }
 

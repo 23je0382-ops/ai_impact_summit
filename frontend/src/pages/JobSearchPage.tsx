@@ -86,20 +86,16 @@ export default function JobSearchPage() {
     };
 
     const addToQueue = async (job: any) => {
-        // We would need an endpoint to queue a specific single job
-        // But since the rank endpoint accepts a list, we can just "rerank" with auto_queue=true for this single job? 
-        // Or better, just implement a dedicated queue endpoint? 
-        // For now, let's just use the rank endpoint with limit=1 and THIS job specifically?
-        // Actually, Job Ranker expects to rank FROM STORAGE.
-        // If we want to queue a specific job, we can just call rank again with strict filters?
-        // No, that's hacky. 
-        // Let's assume for this MVP we just click "Save" which locally updates UI, and maybe triggers a background queue?
-        // Actually, I missed implementing `POST /api/jobs/queue/{id}`. 
-        // Let's implement queueing via a simple call (maybe just re-rank with auto_queue=true for top 1?)
-        // Wait, the user requirement was "Add to Queue keys".
-        // I'll leave the button as a visual toggle for now, or just alert "Added".
-        alert(`Added ${job.title} to queue!`);
-        setQueueCount(prev => prev + 1);
+        try {
+            const res = await axios.post(`${JOBS_API}/queue/${job.id}`);
+            if (res.data.success) {
+                alert(`Successfully added ${job.title} to your application queue!`);
+                setQueueCount(prev => prev + 1);
+            }
+        } catch (err) {
+            console.error('Failed to add to queue', err);
+            alert('Failed to add job to queue.');
+        }
     };
 
     return (
@@ -199,6 +195,16 @@ export default function JobSearchPage() {
                         <div className="flex flex-col items-center justify-center p-12 text-gray-500">
                             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
                             <p>{ranking ? 'AI is analyzing matches...' : 'Fetching jobs from sandbox...'}</p>
+                        </div>
+                    )}
+
+                    {searchResults.length === 0 && !loading && (
+                        <div className="bg-white p-12 rounded-xl border border-dashed border-gray-300 text-center">
+                            <Search className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                            <h3 className="text-lg font-medium text-gray-900">No jobs found yet</h3>
+                            <p className="text-gray-500 max-w-sm mx-auto mt-2">
+                                Try adjusting your filters or click "Find Jobs" to fetch the latest opportunities from the sandbox.
+                            </p>
                         </div>
                     )}
 

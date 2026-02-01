@@ -1,7 +1,7 @@
 {
   "answers": [
     {
-      "id": "8db53ead-29c3-4b1f-a6a2-1ff93ed9c36b",
+      "id": "a1661185-97e8-4cf8-bac7-20b8386cc028",
       "category": "work_authorization",
       "question": "What is your work authorization status?",
       "question_variants": [
@@ -9,14 +9,14 @@
         "Do you require visa sponsorship?",
         "What is your work permit status?"
       ],
-      "answer": "I am a US Citizen, which grants me the authorization to work in the United States.",
+      "answer": "I am currently a student and do not have explicit work authorization status mentioned, [EDIT] please provide more context or details to give a precise answer.",
       "needs_editing": false,
       "is_template": false,
-      "created_at": "2026-02-01T00:14:19.090442",
-      "updated_at": "2026-02-01T00:14:19.090455"
+      "created_at": "2026-02-01T06:17:53.742141",
+      "updated_at": "2026-02-01T06:17:53.751267"
     },
     {
-      "id": "b66a5e34-8807-4d8a-b3e0-3d215fc7f7ee",
+      "id": "66407c9c-bf7f-4f88-9d77-e54b96142538",
       "category": "availability",
       "question": "What is your availability/start date?",
       "question_variants": [
@@ -24,14 +24,14 @@
         "What is your notice period?",
         "How soon can you join?"
       ],
-      "answer": "I am available to start immediately.",
+      "answer": "I am expected to complete my degree by May 2028, and my availability to start work would be after that, [EDIT] please provide more context or details to give a precise start date.",
       "needs_editing": false,
       "is_template": false,
-      "created_at": "2026-02-01T00:14:19.090472",
-      "updated_at": "2026-02-01T00:14:19.090476"
+      "created_at": "2026-02-01T06:17:53.742184",
+      "updated_at": "2026-02-01T06:17:53.751295"
     },
     {
-      "id": "a25a2557-4c25-4a9d-9dbd-dbaa8de15ac8",
+      "id": "a32e410f-ed94-4743-a43c-51a849ff577f",
       "category": "relocation",
       "question": "Are you willing to relocate?",
       "question_variants": [
@@ -39,14 +39,14 @@
         "Are you open to relocation?",
         "Can you relocate to our office location?"
       ],
-      "answer": "Yes, I am willing to relocate.",
+      "answer": "I am open to considering relocation opportunities, [EDIT] however, I would need more information about the location and the role to make a definitive decision.",
       "needs_editing": false,
       "is_template": false,
-      "created_at": "2026-02-01T00:14:19.090487",
-      "updated_at": "2026-02-01T00:14:19.090491"
+      "created_at": "2026-02-01T06:17:53.742196",
+      "updated_at": "2026-02-01T06:17:53.751303"
     },
     {
-      "id": "f6ab3684-0c05-4e22-a096-0d30b9b99d98",
+      "id": "6d7d3ef9-1a5a-4088-85f2-81ae4845fcf4",
       "category": "salary_expectations",
       "question": "What are your salary expectations?",
       "question_variants": [
@@ -54,35 +54,54 @@
         "What salary range are you looking for?",
         "What are your compensation requirements?"
       ],
-      "answer": "My salary expectations are between $80,000 and $100,000.",
+      "answer": "As a student with no prior work experience, I do not have a specific salary expectation, [EDIT] I would consider industry standards and discuss this further based on the role and company.",
       "needs_editing": false,
       "is_template": false,
-      "created_at": "2026-02-01T00:14:19.090501",
-      "updated_at": "2026-02-01T00:14:19.090504"
+      "created_at": "2026-02-01T06:17:53.742207",
+      "updated_at": "2026-02-01T06:17:53.751308"
     },
     {
-      "id": "f24cdf37-63fb-4755-9c09-4c931c93ebe9",
+      "id": "d41170e7-a231-4ecb-8dc4-457ac2736d03",
       "category": "why_company",
-      "answer": "I have always admired [COMPANY_NAME]'s commitment to innovation and engineering excellence. As someone passionate about building scalable distributed systems, I am excited by the technical challenges your team tackles. I believe my background in high-performance computing and my experience at Swiggy make me a strong fit for the [ROLE] position.",
+      "question": "Why do you want to work for this company?",
+      "question_variants": [
+        "Why are you interested in this role?",
+        "What attracts you to our company?",
+        "Why should we hire you?"
+      ],
+      "answer": "I am excited about the opportunity to work at [COMPANY_NAME] as a [ROLE] because of the company's [EDIT] mission, values, and impact in the industry, and I believe my skills and education align with the company's goals.",
       "needs_editing": true,
       "is_template": true,
-      "updated_at": "2026-02-01T01:39:48.517304"
+      "created_at": "2026-02-01T06:17:53.742217",
+      "updated_at": "2026-02-01T06:17:53.751313"
     },
     {
-      "id": "1e2812e9-d7fc-4986-84be-1d94c7040438",
+      "id": "d4db5a3f-ec53-4143-96d5-1418f3358798",
       "category": "strengths",
-      "answer": "My greatest strength is my ability to solve complex algorithmic problems efficiently. At IIT Bombay, I maintained a 9.2 GPA while leading technical projects like a distributed file system. I thrive in fast-paced environments where I can apply my deep understanding of data structures and ML models to drive tangible performance improvements.",
+      "question": "What are your greatest strengths?",
+      "question_variants": [
+        "What do you consider your key strengths?",
+        "What makes you a good candidate?"
+      ],
+      "answer": "My greatest strengths include my strong foundation in mathematics and computing, proficiency in programming languages such as Python and C++, and experience with machine learning algorithms, which I believe would enable me to make valuable contributions to a team.",
       "needs_editing": false,
       "is_template": false,
-      "updated_at": "2026-02-01T01:39:48.517314"
+      "created_at": "2026-02-01T06:17:53.742234",
+      "updated_at": "2026-02-01T06:17:53.751318"
     },
     {
-      "id": "fd29feb5-0878-45ee-a3be-daf0ab28e6e0",
+      "id": "1d3582af-af32-4c0a-bb6e-41ca7c34496e",
       "category": "career_goals",
-      "answer": "My goal is to grow as a technical architect in a leading product company. Over the next few years, I want to deepen my expertise in large-scale AI systems and eventually lead engineering teams building impactful products. I see this role as the perfect foundation to apply my research skills in a production setting.",
+      "question": "What are your career goals?",
+      "question_variants": [
+        "Where do you see yourself in 5 years?",
+        "What are your long-term career aspirations?"
+      ],
+      "answer": "My career goals include applying my technical skills and knowledge to drive innovation and solve complex problems, and I am excited about the opportunity to learn and grow with a company, [EDIT] specifically in the areas of machine learning and artificial intelligence.",
       "needs_editing": false,
       "is_template": false,
-      "updated_at": "2026-02-01T01:39:48.517317"
+      "created_at": "2026-02-01T06:17:53.742246",
+      "updated_at": "2026-02-01T06:17:53.751323"
     }
   ]
 }

@@ -92,9 +92,9 @@ def assemble_application_package(job_id: str, profile_data: Optional[Dict[str, A
                 "questionnaire_answers": answers_map,
             },
             "profile_snapshot": {
-                "name": profile_data.get("name"),
-                "email": profile_data.get("email"),
-                "phone": profile_data.get("phone"),
+                "name": profile_data.get("personal_info", {}).get("name") or profile_data.get("name"),
+                "email": profile_data.get("personal_info", {}).get("email") or profile_data.get("email"),
+                "phone": profile_data.get("personal_info", {}).get("phone") or profile_data.get("phone"),
                 "linkedin": profile_data.get("links", {}).get("linkedin")
             },
             "status": "ready_to_submit"

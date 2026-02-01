@@ -1,7 +1,7 @@
 """
 Profile Extractor Service
 
-Uses Groq LLM API to extract structured profile information from resume text.
+Uses Gemini LLM API to extract structured profile information from resume text.
 Extracts: Education, Projects, Experience, Skills, Links
 """
 
@@ -9,9 +9,7 @@ import json
 import re
 from typing import Any, Dict, List, Optional
 
-from groq import Groq
-
-from app.config import settings
+from app.services.llm_client import generate_json, LLMClientError
 from app.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -81,7 +79,7 @@ class ProfileExtractionError(Exception):
 
 def extract_profile_from_text(resume_text: str) -> Dict[str, Any]:
     """
-    Extract structured profile data from resume text using Groq LLM.
+    Extract structured profile data from resume text using Gemini LLM.
     
     Args:
         resume_text: The raw text extracted from a resume.
@@ -92,33 +90,16 @@ def extract_profile_from_text(resume_text: str) -> Dict[str, Any]:
     Raises:
         ProfileExtractionError: If extraction fails.
     """
-    if not settings.groq_api_key:
-        raise ProfileExtractionError("GROQ_API_KEY not configured")
-    
     if not resume_text or len(resume_text.strip()) < 50:
         raise ProfileExtractionError("Resume text is too short to extract meaningful data")
     
     try:
-        client = Groq(api_key=settings.groq_api_key)
-        
-        # Call Groq API
-        completion = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[
-                {
-                    "role": "system",
-                    "content": "You are a precise resume parser. Return only valid JSON. Never invent information."
-                },
-                {
-                    "role": "user",
-                    "content": EXTRACTION_PROMPT + resume_text
-                }
-            ],
-            temperature=0.1,  # Low temperature for consistent, factual output
-            max_tokens=4000,
+        # Call Gemini API via llm_client
+        response_text = generate_json(
+            prompt=EXTRACTION_PROMPT + resume_text,
+            system_prompt="You are a precise resume parser. Return only valid JSON. Never invent information.",
+            temperature=0.1
         )
-        
-        response_text = completion.choices[0].message.content.strip()
         
         # Extract JSON from response (handle markdown code blocks)
         json_match = re.search(r'```(?:json)?\s*([\s\S]*?)\s*```', response_text)
@@ -139,6 +120,8 @@ def extract_profile_from_text(resume_text: str) -> Dict[str, Any]:
         logger.info("Successfully extracted profile from resume")
         return validated_data
         
+    except LLMClientError as e:
+        raise ProfileExtractionError(str(e))
     except ProfileExtractionError:
         raise
     except Exception as e:

@@ -62,12 +62,12 @@ async def submit_application(job_id: str) -> Dict[str, Any]:
     resume_text = "\n".join(resume_lines) if resume_lines else str(resume_data)
 
     payload = {
-        "applicant_name": profile_snap.get("name", "Arjun Sharma"),
-        "email": profile_snap.get("email", "arjun.iitb@example.com"),
-        "phone": profile_snap.get("phone", "+91 98765 43210"),
+        "applicant_name": profile_snap.get("name") or "Arjun Sharma",
+        "email": profile_snap.get("email") or "arjun.iitb@example.com",
+        "phone": profile_snap.get("phone") or "+91 98765 43210",
         "resume_text": resume_text,
         "cover_letter": artifacts.get("cover_letter", ""),
-        "linkedin_url": profile_snap.get("linkedin", ""),
+        "linkedin_url": profile_snap.get("linkedin") or "",
         "work_authorization": "US Citizen / OPT",
         "availability": "Immediately",
         "salary_expectation": "Competitive"

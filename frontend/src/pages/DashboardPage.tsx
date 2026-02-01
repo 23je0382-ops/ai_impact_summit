@@ -80,42 +80,38 @@ export default function DashboardPage() {
                 <SparklesIcon className="absolute right-0 top-0 w-64 h-64 text-white opacity-5 transform translate-x-12 -translate-y-12" />
             </div>
 
-            {/* Onboarding Checklist */}
-            {!allStepsComplete && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {steps.map((step, idx) => (
-                        <Link
-                            key={step.id}
-                            to={step.link}
-                            className={`p-6 rounded-xl border-2 transition-all hover:shadow-md group relative overflow-hidden bg-white ${step.completed
-                                ? 'border-green-100 bg-green-50/30'
-                                : idx === steps.findIndex(s => !s.completed)
-                                    ? 'border-blue-500 ring-4 ring-blue-50'
-                                    : 'border-gray-100'
-                                }`}
-                        >
-                            <div className="flex items-start justify-between mb-4">
-                                <div className={`p-3 rounded-lg ${step.completed ? 'bg-green-100 text-green-600' : 'bg-blue-50 text-blue-600'}`}>
-                                    <step.icon className="w-6 h-6" />
-                                </div>
-                                {step.completed ? (
-                                    <CheckCircleIcon className="w-6 h-6 text-green-500" />
-                                ) : (
-                                    <span className="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded-full">STEP {idx + 1}</span>
-                                )}
+            {/* Onboarding Checklist / Quick Actions */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {steps.map((step, idx) => (
+                    <Link
+                        key={step.id}
+                        to={step.link}
+                        className={`p-6 rounded-xl border-2 transition-all hover:shadow-md group relative overflow-hidden bg-white ${step.completed
+                            ? 'border-green-100 bg-green-50/30'
+                            : idx === steps.findIndex(s => !s.completed)
+                                ? 'border-blue-500 ring-4 ring-blue-50'
+                                : 'border-gray-100'
+                            }`}
+                    >
+                        <div className="flex items-start justify-between mb-4">
+                            <div className={`p-3 rounded-lg ${step.completed ? 'bg-green-100 text-green-600' : 'bg-blue-50 text-blue-600'}`}>
+                                <step.icon className="w-6 h-6" />
                             </div>
-                            <h3 className="font-bold text-gray-900 mb-1">{step.title}</h3>
-                            <p className="text-sm text-gray-500 mb-4">{step.description}</p>
-
-                            {!step.completed && (
-                                <div className="flex items-center text-blue-600 font-semibold text-sm group-hover:translate-x-1 transition-transform">
-                                    Start Now <ArrowRightIcon className="w-4 h-4 ml-1" />
-                                </div>
+                            {step.completed ? (
+                                <CheckCircleIcon className="w-6 h-6 text-green-500" />
+                            ) : (
+                                <span className="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded-full">STEP {idx + 1}</span>
                             )}
-                        </Link>
-                    ))}
-                </div>
-            )}
+                        </div>
+                        <h3 className="font-bold text-gray-900 mb-1">{step.title}</h3>
+                        <p className="text-sm text-gray-500 mb-4">{step.description}</p>
+
+                        <div className="flex items-center text-blue-600 font-semibold text-sm group-hover:translate-x-1 transition-transform">
+                            {step.completed ? 'View Details' : 'Start Now'} <ArrowRightIcon className="w-4 h-4 ml-1" />
+                        </div>
+                    </Link>
+                ))}
+            </div>
 
             {/* Quick Stats Grid */}
             <h2 className="text-xl font-bold text-gray-900">Overview</h2>

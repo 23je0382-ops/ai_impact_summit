@@ -12,9 +12,7 @@ from typing import Any, Dict, List, Optional
 import uuid
 from datetime import datetime
 
-from groq import Groq
-
-from app.config import settings
+from app.services.llm_client import generate_json, LLMClientError
 from app.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -105,9 +103,6 @@ def generate_bullets_from_profile(profile_data: Dict[str, Any]) -> List[Dict[str
     Raises:
         BulletGenerationError: If bullet generation fails.
     """
-    if not settings.groq_api_key:
-        raise BulletGenerationError("GROQ_API_KEY not configured")
-    
     # Validate profile has content to generate bullets from
     has_experience = profile_data.get("experience") and len(profile_data["experience"]) > 0
     has_projects = profile_data.get("projects") and len(profile_data["projects"]) > 0
@@ -116,32 +111,18 @@ def generate_bullets_from_profile(profile_data: Dict[str, Any]) -> List[Dict[str
         raise BulletGenerationError("Profile must have at least one project or experience to generate bullets")
     
     try:
-        client = Groq(api_key=settings.groq_api_key)
-        
         # Prepare profile data for prompt (exclude validation metadata)
         profile_for_prompt = {
             k: v for k, v in profile_data.items() 
             if not k.startswith("_")
         }
         
-        # Call Groq API
-        completion = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[
-                {
-                    "role": "system",
-                    "content": "You are an expert resume writer. Generate achievement bullets that are grounded in facts. Return only valid JSON array."
-                },
-                {
-                    "role": "user",
-                    "content": BULLET_GENERATION_PROMPT + json.dumps(profile_for_prompt, indent=2)
-                }
-            ],
-            temperature=0.3,  # Slightly higher for creative writing, but still factual
-            max_tokens=4000,
+        # Call Gemini API via llm_client
+        response_text = generate_json(
+            prompt=BULLET_GENERATION_PROMPT + json.dumps(profile_for_prompt, indent=2),
+            system_prompt="You are an expert resume writer. Generate achievement bullets that are grounded in facts. Return only valid JSON array.",
+            temperature=0.3
         )
-        
-        response_text = completion.choices[0].message.content.strip()
         
         # Extract JSON from response
         json_match = re.search(r'```(?:json)?\s*([\s\S]*?)\s*```', response_text)
@@ -189,6 +170,8 @@ def generate_bullets_from_profile(profile_data: Dict[str, Any]) -> List[Dict[str
         logger.info(f"Generated {len(processed_bullets)} achievement bullets")
         return processed_bullets
         
+    except LLMClientError as e:
+        raise BulletGenerationError(str(e))
     except BulletGenerationError:
         raise
     except Exception as e:

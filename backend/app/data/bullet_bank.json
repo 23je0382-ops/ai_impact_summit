@@ -74,6 +74,256 @@
       "is_grounded": true,
       "profile_id": "demo_user",
       "saved_at": "2026-02-01T01:39:48.516020"
+    },
+    {
+      "id": "58a60a1a-6e9f-4771-b678-f8a7f65ed7b7",
+      "bullet": "Implemented 10+ ML/DL algorithms from scratch using Python and NumPy, resulting in optimized matrix computations.",
+      "source_type": "project",
+      "source_name": "Machine Learning Algorithms from Scratch",
+      "technologies": [
+        "Python",
+        "NumPy"
+      ],
+      "categories": [
+        "data",
+        "ml"
+      ],
+      "has_metrics": false,
+      "created_at": "2026-02-01T02:21:20.862257",
+      "is_grounded": true,
+      "saved_at": "2026-02-01T02:21:20.864813"
+    },
+    {
+      "id": "7632cea6-3f11-4113-ba65-67f3739ae7b8",
+      "bullet": "Built real-time pipeline using Selenium, Python, and Scikit-learn to scrape and clean live Twitter feedback during high-traffic events.",
+      "source_type": "project",
+      "source_name": "Real-time Feedback Sentiment Analysis and Alert System",
+      "technologies": [
+        "Python",
+        "Selenium",
+        "Scikit-learn"
+      ],
+      "categories": [
+        "frontend",
+        "data",
+        "ml"
+      ],
+      "has_metrics": false,
+      "created_at": "2026-02-01T02:21:20.862382",
+      "is_grounded": true,
+      "saved_at": "2026-02-01T02:21:20.864839"
+    },
+    {
+      "id": "9569c337-eb7c-4ae6-aeed-be248652ecb7",
+      "bullet": "Built a natural-language database query tool using fine-tuned LLaMA-38B with Q-LoRA, Python, and SQL, generating readable insights.",
+      "source_type": "project",
+      "source_name": "Database GPT",
+      "technologies": [
+        "Python",
+        "LLaMA-38B",
+        "Q-LoRA",
+        "SQL"
+      ],
+      "categories": [
+        "frontend",
+        "backend",
+        "data"
+      ],
+      "has_metrics": false,
+      "created_at": "2026-02-01T02:21:20.862471",
+      "is_grounded": true,
+      "saved_at": "2026-02-01T02:21:20.864848"
+    },
+    {
+      "id": "823c62fd-92b0-4083-99d4-a53619861a60",
+      "bullet": "Developed 10+ Machine Learning and Deep Learning algorithms from scratch using Python and NumPy, resulting in optimized matrix computations",
+      "source_type": "project",
+      "source_name": "Machine Learning Algorithms from Scratch",
+      "technologies": [
+        "Python",
+        "NumPy"
+      ],
+      "categories": [
+        "data",
+        "ml"
+      ],
+      "has_metrics": false,
+      "created_at": "2026-02-01T06:14:53.668365",
+      "is_grounded": true,
+      "saved_at": "2026-02-01T06:14:53.674734"
+    },
+    {
+      "id": "9ca96898-0a25-45b6-829a-bce48b1f6c40",
+      "bullet": "Built a real-time pipeline using Selenium, Python, and Scikit-learn to scrape and clean live Twitter feedback during high-traffic events",
+      "source_type": "project",
+      "source_name": "Real-time Feedback Sentiment Analysis and Alert System",
+      "technologies": [
+        "Python",
+        "Selenium",
+        "Scikit-learn"
+      ],
+      "categories": [
+        "data",
+        "frontend",
+        "ml"
+      ],
+      "has_metrics": false,
+      "created_at": "2026-02-01T06:14:53.668608",
+      "is_grounded": true,
+      "saved_at": "2026-02-01T06:14:53.674767"
+    },
+    {
+      "id": "9a6c791e-a1a4-4cab-9eee-a1e1d5f8eff8",
+      "bullet": "Implemented a natural-language database query tool using fine-tuned LLaMA-38B with Q-LoRA, converting English questions into SQL and generating readable insights",
+      "source_type": "project",
+      "source_name": "Database GPT",
+      "technologies": [
+        "Python",
+        "LLaMA-38B",
+        "Q-LoRA",
+        "SQL"
+      ],
+      "categories": [
+        "data",
+        "backend"
+      ],
+      "has_metrics": false,
+      "created_at": "2026-02-01T06:14:53.668721",
+      "is_grounded": true,
+      "saved_at": "2026-02-01T06:14:53.674776"
+    },
+    {
+      "id": "a48f682b-0915-4648-a77f-a93906124be6",
+      "bullet": "Implemented 10+ ML/DL algorithms from scratch using Python and NumPy for optimized matrix computations, resulting in improved computational efficiency",
+      "source_type": "project",
+      "source_name": "Machine Learning Algorithms from Scratch",
+      "technologies": [
+        "Python",
+        "NumPy"
+      ],
+      "categories": [
+        "data",
+        "ml"
+      ],
+      "has_metrics": false,
+      "created_at": "2026-02-01T06:31:38.198265",
+      "is_grounded": true,
+      "saved_at": "2026-02-01T06:31:38.204221"
+    },
+    {
+      "id": "b13e3c59-b9e4-4b0a-a489-a3dc93f51f24",
+      "bullet": "Built real-time pipeline using Selenium to scrape and clean live Twitter feedback during high-traffic events, utilizing Python, Transformer, LangChain, and Scikit-learn",
+      "source_type": "project",
+      "source_name": "Real-time Feedback Sentiment Analysis and Alert System",
+      "technologies": [
+        "Python",
+        "Transformer",
+        "LangChain",
+        "FastAPI",
+        "NTFY",
+        "Selenium",
+        "Scikit-learn"
+      ],
+      "categories": [
+        "data",
+        "frontend",
+        "backend",
+        "ml"
+      ],
+      "has_metrics": false,
+      "created_at": "2026-02-01T06:31:38.198375",
+      "is_grounded": true,
+      "saved_at": "2026-02-01T06:31:38.204237"
+    },
+    {
+      "id": "36f82af6-e318-4e19-9327-15a60f69a7ad",
+      "bullet": "Built a natural-language database query tool using fine-tuned LLaMA-38B with Q-LoRA to convert English questions into SQL and generate readable insights, leveraging Python, Transformers, and SQL",
+      "source_type": "project",
+      "source_name": "Database GPT",
+      "technologies": [
+        "Python",
+        "LLaMA-38B",
+        "Q-LoRA",
+        "Transformers",
+        "SQL",
+        "SQLAlchemy",
+        "NiceGUI"
+      ],
+      "categories": [
+        "data",
+        "frontend",
+        "backend"
+      ],
+      "has_metrics": false,
+      "created_at": "2026-02-01T06:31:38.198430",
+      "is_grounded": true,
+      "saved_at": "2026-02-01T06:31:38.204242"
+    },
+    {
+      "id": "a203c312-06cf-4678-ba20-06216e1e1275",
+      "bullet": "Developed and optimized machine learning algorithms using Python and NumPy, resulting in enhanced model performance",
+      "source_type": "project",
+      "source_name": "Machine Learning Algorithms from Scratch",
+      "technologies": [
+        "Python",
+        "NumPy"
+      ],
+      "categories": [
+        "data",
+        "ml"
+      ],
+      "has_metrics": false,
+      "created_at": "2026-02-01T06:31:38.198471",
+      "is_grounded": true,
+      "saved_at": "2026-02-01T06:31:38.204245"
+    },
+    {
+      "id": "0c851254-289e-4640-96d9-5e0934c8c504",
+      "bullet": "Designed and implemented a real-time sentiment analysis pipeline using Selenium, Python, and Scikit-learn, enabling real-time feedback analysis",
+      "source_type": "project",
+      "source_name": "Real-time Feedback Sentiment Analysis and Alert System",
+      "technologies": [
+        "Python",
+        "Transformer",
+        "LangChain",
+        "FastAPI",
+        "NTFY",
+        "Selenium",
+        "Scikit-learn"
+      ],
+      "categories": [
+        "data",
+        "backend",
+        "ml"
+      ],
+      "has_metrics": false,
+      "created_at": "2026-02-01T06:31:38.198524",
+      "is_grounded": true,
+      "saved_at": "2026-02-01T06:31:38.204248"
+    },
+    {
+      "id": "feafe1a1-ee91-4de2-ba84-7390ccd8d705",
+      "bullet": "Utilized fine-tuned LLaMA-38B with Q-LoRA to build a database query tool, converting English questions into SQL and generating insights using Python, Transformers, and SQL",
+      "source_type": "project",
+      "source_name": "Database GPT",
+      "technologies": [
+        "Python",
+        "LLaMA-38B",
+        "Q-LoRA",
+        "Transformers",
+        "SQL",
+        "SQLAlchemy",
+        "NiceGUI"
+      ],
+      "categories": [
+        "data",
+        "frontend",
+        "backend"
+      ],
+      "has_metrics": false,
+      "created_at": "2026-02-01T06:31:38.198567",
+      "is_grounded": true,
+      "saved_at": "2026-02-01T06:31:38.204251"
     }
   ]
 }

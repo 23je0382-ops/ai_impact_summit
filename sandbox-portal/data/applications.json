@@ -1,0 +1,26 @@
+{
+  "applications": [
+    {
+      "id": "5bab0a3a-e24b-437a-ac91-43177a556d91",
+      "job_id": "fe7675eb-207f-42c2-9f82-8cb5508c212b",
+      "job_title": "New Graduate Software Engineer",
+      "company": "Notion",
+      "submitted_at": "2026-02-01T00:29:37.927623",
+      "status": "submitted",
+      "applicant": {
+        "applicant_name": "John Doe",
+        "email": "john@example.com",
+        "phone": null,
+        "resume_text": "Sample resume text",
+        "cover_letter": null,
+        "linkedin_url": null,
+        "github_url": null,
+        "portfolio_url": null,
+        "work_authorization": "US Citizen",
+        "availability": "Immediately",
+        "salary_expectation": null,
+        "additional_info": null
+      }
+    }
+  ]
+}

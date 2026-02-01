@@ -1,0 +1,88 @@
+{
+  "answers": [
+    {
+      "id": "8db53ead-29c3-4b1f-a6a2-1ff93ed9c36b",
+      "category": "work_authorization",
+      "question": "What is your work authorization status?",
+      "question_variants": [
+        "Are you authorized to work in the US?",
+        "Do you require visa sponsorship?",
+        "What is your work permit status?"
+      ],
+      "answer": "I am a US Citizen, which grants me the authorization to work in the United States.",
+      "needs_editing": false,
+      "is_template": false,
+      "created_at": "2026-02-01T00:14:19.090442",
+      "updated_at": "2026-02-01T00:14:19.090455"
+    },
+    {
+      "id": "b66a5e34-8807-4d8a-b3e0-3d215fc7f7ee",
+      "category": "availability",
+      "question": "What is your availability/start date?",
+      "question_variants": [
+        "When can you start?",
+        "What is your notice period?",
+        "How soon can you join?"
+      ],
+      "answer": "I am available to start immediately.",
+      "needs_editing": false,
+      "is_template": false,
+      "created_at": "2026-02-01T00:14:19.090472",
+      "updated_at": "2026-02-01T00:14:19.090476"
+    },
+    {
+      "id": "a25a2557-4c25-4a9d-9dbd-dbaa8de15ac8",
+      "category": "relocation",
+      "question": "Are you willing to relocate?",
+      "question_variants": [
+        "Would you consider relocating for this position?",
+        "Are you open to relocation?",
+        "Can you relocate to our office location?"
+      ],
+      "answer": "Yes, I am willing to relocate.",
+      "needs_editing": false,
+      "is_template": false,
+      "created_at": "2026-02-01T00:14:19.090487",
+      "updated_at": "2026-02-01T00:14:19.090491"
+    },
+    {
+      "id": "f6ab3684-0c05-4e22-a096-0d30b9b99d98",
+      "category": "salary_expectations",
+      "question": "What are your salary expectations?",
+      "question_variants": [
+        "What is your expected compensation?",
+        "What salary range are you looking for?",
+        "What are your compensation requirements?"
+      ],
+      "answer": "My salary expectations are between $80,000 and $100,000.",
+      "needs_editing": false,
+      "is_template": false,
+      "created_at": "2026-02-01T00:14:19.090501",
+      "updated_at": "2026-02-01T00:14:19.090504"
+    },
+    {
+      "id": "f24cdf37-63fb-4755-9c09-4c931c93ebe9",
+      "category": "why_company",
+      "answer": "I have always admired [COMPANY_NAME]'s commitment to innovation and engineering excellence. As someone passionate about building scalable distributed systems, I am excited by the technical challenges your team tackles. I believe my background in high-performance computing and my experience at Swiggy make me a strong fit for the [ROLE] position.",
+      "needs_editing": true,
+      "is_template": true,
+      "updated_at": "2026-02-01T01:39:48.517304"
+    },
+    {
+      "id": "1e2812e9-d7fc-4986-84be-1d94c7040438",
+      "category": "strengths",
+      "answer": "My greatest strength is my ability to solve complex algorithmic problems efficiently. At IIT Bombay, I maintained a 9.2 GPA while leading technical projects like a distributed file system. I thrive in fast-paced environments where I can apply my deep understanding of data structures and ML models to drive tangible performance improvements.",
+      "needs_editing": false,
+      "is_template": false,
+      "updated_at": "2026-02-01T01:39:48.517314"
+    },
+    {
+      "id": "fd29feb5-0878-45ee-a3be-daf0ab28e6e0",
+      "category": "career_goals",
+      "answer": "My goal is to grow as a technical architect in a leading product company. Over the next few years, I want to deepen my expertise in large-scale AI systems and eventually lead engineering teams building impactful products. I see this role as the perfect foundation to apply my research skills in a production setting.",
+      "needs_editing": false,
+      "is_template": false,
+      "updated_at": "2026-02-01T01:39:48.517317"
+    }
+  ]
+}

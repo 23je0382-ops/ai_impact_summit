@@ -1,0 +1,79 @@
+{
+  "bullets": [
+    {
+      "id": "ec38a325-82a8-4203-8113-94427b1310ab",
+      "content": "Optimized delivery route planning algorithm using Graph Neural Networks, reducing average delivery time by 15%.",
+      "source_name": "Swiggy Internship",
+      "source_type": "experience",
+      "categories": [
+        "Machine Learning",
+        "Optimization",
+        "Python"
+      ],
+      "has_metrics": true,
+      "is_grounded": true,
+      "profile_id": "demo_user",
+      "saved_at": "2026-02-01T01:39:48.516008"
+    },
+    {
+      "id": "6aba4cc0-1641-4505-af2a-3fd00bb6f35c",
+      "content": "Collaborated with backend team to integrate real-time traffic data into the routing engine handling 1M+ requests/day.",
+      "source_name": "Swiggy Internship",
+      "source_type": "experience",
+      "categories": [
+        "Backend",
+        "Scalability",
+        "Collaboration"
+      ],
+      "has_metrics": true,
+      "is_grounded": true,
+      "profile_id": "demo_user",
+      "saved_at": "2026-02-01T01:39:48.516016"
+    },
+    {
+      "id": "5514a18b-12f3-41b9-9400-8b9872b0ba86",
+      "content": "Fine-tuned Llama-2-7b on a curated dataset of 50k local language pairs, improving Hindi-English translation BLEU score by 4.5 points.",
+      "source_name": "Krutrim Internship",
+      "source_type": "experience",
+      "categories": [
+        "AI/ML",
+        "LLMs",
+        "NLP"
+      ],
+      "has_metrics": true,
+      "is_grounded": true,
+      "profile_id": "demo_user",
+      "saved_at": "2026-02-01T01:39:48.516018"
+    },
+    {
+      "id": "d407a3e1-2080-4365-b222-dad5b2f571e4",
+      "content": "Architected an autonomous agent system using LangChain and FastAPI to generate tailored resumes, serving 500+ users.",
+      "source_name": "ResumeAI Project",
+      "source_type": "project",
+      "categories": [
+        "Full Stack",
+        "AI Engineering",
+        "Product"
+      ],
+      "has_metrics": true,
+      "is_grounded": true,
+      "profile_id": "demo_user",
+      "saved_at": "2026-02-01T01:39:48.516019"
+    },
+    {
+      "id": "788a92a5-6b67-453c-b36e-48dde119b1e4",
+      "content": "Engineered a low-latency trading engine in Node.js processing market data updates in under 50ms using WebSockets.",
+      "source_name": "CryptoTrade Bot",
+      "source_type": "project",
+      "categories": [
+        "Low Latency",
+        "Systems",
+        "JavaScript"
+      ],
+      "has_metrics": true,
+      "is_grounded": true,
+      "profile_id": "demo_user",
+      "saved_at": "2026-02-01T01:39:48.516020"
+    }
+  ]
+}

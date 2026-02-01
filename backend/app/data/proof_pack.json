@@ -1,0 +1,55 @@
+{
+  "proof_packs": [
+    {
+      "id": "caacfb73-8ca6-4322-ab26-ac08515c28f3",
+      "profile_id": null,
+      "created_at": "2026-02-01T00:18:26.426739",
+      "items": [
+        {
+          "id": "c3adecd0-656c-4e54-aa04-c543739b91f7",
+          "title": "AI Dashboard GitHub Repository",
+          "url": "https://github.com/johndoe/ai-dashboard",
+          "category": "GitHub Repository",
+          "description": "A GitHub repository containing the code for a real-time AI dashboard built with React and FastAPI, demonstrating expertise in full-stack development and AI integration. The repository showcases the use of PostgreSQL for database management.",
+          "related_skills": [
+            "React",
+            "FastAPI",
+            "PostgreSQL",
+            "Full-stack development",
+            "AI integration"
+          ],
+          "related_project_name": "AI Dashboard",
+          "created_at": "2026-02-01T00:18:26.424786"
+        },
+        {
+          "id": "b0d2ec0b-3c42-491a-b923-eee6889144a8",
+          "title": "John Doe's Portfolio",
+          "url": "https://johndoe.dev",
+          "category": "Portfolio item",
+          "description": "A personal portfolio website showcasing John Doe's projects and skills, providing a comprehensive overview of his experience and expertise in software development. The portfolio likely features a collection of his notable works and achievements.",
+          "related_skills": [
+            "Web development",
+            "Design",
+            "Project showcase"
+          ],
+          "related_project_name": null,
+          "created_at": "2026-02-01T00:18:26.424983"
+        },
+        {
+          "id": "dafc40cb-16ce-49b5-8a98-f562ff529b6b",
+          "title": "John Doe's GitHub Profile",
+          "url": "https://github.com/johndoe",
+          "category": "GitHub Repository",
+          "description": "A GitHub profile containing a collection of John Doe's public repositories, demonstrating his coding skills and experience with various technologies. The profile provides insight into his open-source contributions and collaborative work.",
+          "related_skills": [
+            "Version control",
+            "Open-source development",
+            "Collaboration"
+          ],
+          "related_project_name": null,
+          "created_at": "2026-02-01T00:18:26.425034"
+        }
+      ]
+    }
+  ]
+}

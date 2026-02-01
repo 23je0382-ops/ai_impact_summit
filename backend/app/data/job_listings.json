@@ -1,0 +1,437 @@
+{
+  "jobs": [
+    {
+      "id": "9715d34f-34a3-464f-97cc-d52c638b9cd7",
+      "title": "React Developer",
+      "company": "Adobe",
+      "location": "Remote",
+      "job_type": "full-time",
+      "experience_level": "mid",
+      "salary_range": "$100,000-160,000",
+      "description": "Adobe is hiring a React Developer!\n\nWe are on a mission to transform the industry, and we need exceptional engineers to help us achieve our goals. As a React Developer, you will be instrumental in shaping our technical direction and building products that millions of users love.\n\nWe offer a collaborative environment where you'll learn from experienced engineers while having the autonomy to make meaningful contributions. Come join us and be part of something special!",
+      "requirements": [
+        "3+ years of frontend development experience",
+        "Expert knowledge of React and TypeScript",
+        "Strong CSS/Tailwind skills",
+        "Experience with testing frameworks",
+        "Experience with Python"
+      ],
+      "responsibilities": [
+        "Build responsive, accessible user interfaces",
+        "Implement complex UI components",
+        "Optimize frontend performance",
+        "Collaborate with designers and product managers",
+        "Write comprehensive tests"
+      ],
+      "skills_required": [
+        "Azure",
+        "Ruby",
+        "Redux",
+        "Python",
+        "CI/CD",
+        "Vue.js"
+      ],
+      "benefits": [
+        "Competitive salary and equity",
+        "Free meals and snacks",
+        "Learning and development budget",
+        "Health, dental, and vision insurance",
+        "Mental health support"
+      ],
+      "posted_date": "2026-01-13",
+      "application_deadline": "2026-02-10",
+      "is_remote": true,
+      "visa_sponsorship": true,
+      "match_score": 20,
+      "dedup_hash": "39bf6aa802c77c2951b3fdd994eb83fa",
+      "stored_at": "2026-02-01T00:33:59.115901",
+      "status": "new"
+    },
+    {
+      "id": "7bdfa1bb-96e3-468f-8553-2297e405af08",
+      "title": "AI/ML Engineer",
+      "company": "Robinhood",
+      "location": "Remote",
+      "job_type": "full-time",
+      "experience_level": "senior",
+      "salary_range": "$180,000-250,000",
+      "description": "Exciting opportunity at Robinhood!\n\nWe're seeking a AI/ML Engineer to join our growing engineering team. You'll work on cutting-edge technology and have the chance to solve complex problems that matter.\n\nRobinhood is committed to creating an inclusive environment where everyone can thrive. We value diverse perspectives and believe that the best ideas come from teams with varied backgrounds and experiences.",
+      "requirements": [
+        "MS/PhD in Computer Science, ML, or related field",
+        "5+ years of experience in machine learning",
+        "Strong knowledge of PyTorch, TensorFlow, or JAX",
+        "Experience deploying ML models at scale",
+        "Experience with MLflow"
+      ],
+      "responsibilities": [
+        "Design and implement machine learning models",
+        "Build data pipelines for training and inference",
+        "Deploy and monitor ML models in production",
+        "Collaborate with research scientists",
+        "Stay current with latest ML research"
+      ],
+      "skills_required": [
+        "MLflow",
+        "Azure",
+        "Swift",
+        "Scikit-learn",
+        "PyTorch",
+        "Python",
+        "Docker"
+      ],
+      "benefits": [
+        "Learning and development budget",
+        "Health, dental, and vision insurance",
+        "Competitive salary and equity",
+        "Unlimited PTO",
+        "Remote work flexibility"
+      ],
+      "posted_date": "2026-01-18",
+      "application_deadline": "2026-02-15",
+      "is_remote": true,
+      "visa_sponsorship": true,
+      "match_score": 20,
+      "dedup_hash": "b423b97b59f59668baafab3e8c375053",
+      "stored_at": "2026-02-01T00:33:59.116013",
+      "status": "new"
+    },
+    {
+      "id": "c25714b7-ea85-4e36-8cdc-6538cbd8556a",
+      "title": "Frontend Developer",
+      "company": "OpenAI",
+      "location": "Remote",
+      "job_type": "full-time",
+      "experience_level": "mid",
+      "salary_range": "$100,000-160,000",
+      "description": "Join OpenAI as a Frontend Developer!\n\nWe're looking for talented engineers to help us build the next generation of products. You'll work alongside world-class engineers and have the opportunity to make a significant impact.\n\nAt OpenAI, we believe in empowering our engineers to take ownership of their work and drive innovation. This is an exciting opportunity to grow your career while working on challenging problems at scale.\n\nIf you're passionate about technology and want to work with a team that values creativity and collaboration, we'd love to hear from you!",
+      "requirements": [
+        "3+ years of frontend development experience",
+        "Expert knowledge of React and TypeScript",
+        "Strong CSS/Tailwind skills",
+        "Experience with testing frameworks",
+        "Experience with Next.js"
+      ],
+      "responsibilities": [
+        "Build responsive, accessible user interfaces",
+        "Implement complex UI components",
+        "Optimize frontend performance",
+        "Collaborate with designers and product managers",
+        "Write comprehensive tests"
+      ],
+      "skills_required": [
+        "Next.js",
+        "TypeScript",
+        "Python",
+        "CI/CD",
+        "Docker",
+        "Tailwind CSS"
+      ],
+      "benefits": [
+        "Unlimited PTO",
+        "Remote work flexibility",
+        "Free meals and snacks",
+        "Mental health support",
+        "Competitive salary and equity"
+      ],
+      "posted_date": "2026-01-07",
+      "application_deadline": "2026-01-27",
+      "is_remote": true,
+      "visa_sponsorship": true,
+      "match_score": 20,
+      "dedup_hash": "c623d380bb64a55ff09edd1d8db4d0c7",
+      "stored_at": "2026-02-01T00:33:59.116034",
+      "status": "new"
+    },
+    {
+      "id": "0a0fbf37-dceb-4a8e-8525-50d7c4b81daa",
+      "title": "ML Engineer",
+      "company": "Qualcomm",
+      "location": "Remote",
+      "job_type": "full-time",
+      "experience_level": "senior",
+      "salary_range": "$180,000-250,000",
+      "description": "Qualcomm is hiring a ML Engineer!\n\nWe are on a mission to transform the industry, and we need exceptional engineers to help us achieve our goals. As a ML Engineer, you will be instrumental in shaping our technical direction and building products that millions of users love.\n\nWe offer a collaborative environment where you'll learn from experienced engineers while having the autonomy to make meaningful contributions. Come join us and be part of something special!",
+      "requirements": [
+        "MS/PhD in Computer Science, ML, or related field",
+        "5+ years of experience in machine learning",
+        "Strong knowledge of PyTorch, TensorFlow, or JAX",
+        "Experience deploying ML models at scale",
+        "Experience with NumPy"
+      ],
+      "responsibilities": [
+        "Design and implement machine learning models",
+        "Build data pipelines for training and inference",
+        "Deploy and monitor ML models in production",
+        "Collaborate with research scientists",
+        "Stay current with latest ML research"
+      ],
+      "skills_required": [
+        "NumPy",
+        "Python",
+        "C++",
+        "AWS",
+        "Docker",
+        "Hugging Face",
+        "TensorFlow"
+      ],
+      "benefits": [
+        "Learning and development budget",
+        "Competitive salary and equity",
+        "Mental health support",
+        "Remote work flexibility",
+        "Parental leave"
+      ],
+      "posted_date": "2026-01-23",
+      "application_deadline": "2026-02-20",
+      "is_remote": true,
+      "visa_sponsorship": false,
+      "match_score": 15,
+      "dedup_hash": "ec5041841c3bb9347ae79ad17478acef",
+      "stored_at": "2026-02-01T00:33:59.116046",
+      "status": "new"
+    },
+    {
+      "id": "06af944b-acd8-4283-80dd-485f20d8d249",
+      "title": "Frontend Developer",
+      "company": "Netflix",
+      "location": "Los Gatos, CA",
+      "job_type": "full-time",
+      "experience_level": "mid",
+      "salary_range": "$100,000-160,000",
+      "description": "Netflix is hiring a Frontend Developer!\n\nWe are on a mission to transform the industry, and we need exceptional engineers to help us achieve our goals. As a Frontend Developer, you will be instrumental in shaping our technical direction and building products that millions of users love.\n\nWe offer a collaborative environment where you'll learn from experienced engineers while having the autonomy to make meaningful contributions. Come join us and be part of something special!",
+      "requirements": [
+        "3+ years of frontend development experience",
+        "Expert knowledge of React and TypeScript",
+        "Strong CSS/Tailwind skills",
+        "Experience with testing frameworks",
+        "Experience with Go"
+      ],
+      "responsibilities": [
+        "Build responsive, accessible user interfaces",
+        "Implement complex UI components",
+        "Optimize frontend performance",
+        "Collaborate with designers and product managers",
+        "Write comprehensive tests"
+      ],
+      "skills_required": [
+        "Azure",
+        "HTML/CSS",
+        "Python",
+        "Go",
+        "Docker",
+        "Webpack"
+      ],
+      "benefits": [
+        "Health, dental, and vision insurance",
+        "Competitive salary and equity",
+        "Free meals and snacks",
+        "Unlimited PTO",
+        "Remote work flexibility"
+      ],
+      "posted_date": "2026-01-10",
+      "application_deadline": "2026-01-31",
+      "is_remote": false,
+      "visa_sponsorship": true,
+      "match_score": 15,
+      "dedup_hash": "8c64a08786577188db36f856af57208e",
+      "stored_at": "2026-02-01T00:33:59.116060",
+      "status": "new"
+    },
+    {
+      "id": "c3b3ae4b-266d-4ea8-84d0-e9fd360b8552",
+      "title": "Applied ML Scientist",
+      "company": "Amazon",
+      "location": "Seattle, WA",
+      "job_type": "full-time",
+      "experience_level": "senior",
+      "salary_range": "$180,000-250,000",
+      "description": "Join Amazon as a Applied ML Scientist!\n\nWe're looking for talented engineers to help us build the next generation of products. You'll work alongside world-class engineers and have the opportunity to make a significant impact.\n\nAt Amazon, we believe in empowering our engineers to take ownership of their work and drive innovation. This is an exciting opportunity to grow your career while working on challenging problems at scale.\n\nIf you're passionate about technology and want to work with a team that values creativity and collaboration, we'd love to hear from you!",
+      "requirements": [
+        "MS/PhD in Computer Science, ML, or related field",
+        "5+ years of experience in machine learning",
+        "Strong knowledge of PyTorch, TensorFlow, or JAX",
+        "Experience deploying ML models at scale",
+        "Experience with Go"
+      ],
+      "responsibilities": [
+        "Design and implement machine learning models",
+        "Build data pipelines for training and inference",
+        "Deploy and monitor ML models in production",
+        "Collaborate with research scientists",
+        "Stay current with latest ML research"
+      ],
+      "skills_required": [
+        "MLflow",
+        "PyTorch",
+        "Python",
+        "Go",
+        "CI/CD",
+        "AWS",
+        "TensorFlow"
+      ],
+      "benefits": [
+        "Learning and development budget",
+        "Competitive salary and equity",
+        "401(k) matching",
+        "Gym membership",
+        "Unlimited PTO"
+      ],
+      "posted_date": "2026-01-10",
+      "application_deadline": "2026-01-18",
+      "is_remote": false,
+      "visa_sponsorship": true,
+      "match_score": 15,
+      "dedup_hash": "2a7067d9afc2ab17dfc051c7b88e8a4d",
+      "stored_at": "2026-02-01T00:33:59.116072",
+      "status": "new"
+    },
+    {
+      "id": "7e04e2fd-8857-4279-8eb8-196bd835c0b0",
+      "title": "Software Developer Intern",
+      "company": "Amazon",
+      "location": "Seattle, WA",
+      "job_type": "internship",
+      "experience_level": "entry",
+      "salary_range": "$40-60/hr",
+      "description": "Join Amazon as a Software Developer Intern!\n\nWe're looking for talented engineers to help us build the next generation of products. You'll work alongside world-class engineers and have the opportunity to make a significant impact.\n\nAt Amazon, we believe in empowering our engineers to take ownership of their work and drive innovation. This is an exciting opportunity to grow your career while working on challenging problems at scale.\n\nIf you're passionate about technology and want to work with a team that values creativity and collaboration, we'd love to hear from you!",
+      "requirements": [
+        "Currently pursuing BS/MS in Computer Science or related field",
+        "Strong programming skills in at least one language",
+        "Understanding of data structures and algorithms",
+        "Ability to work collaboratively in a team environment",
+        "Experience with Python"
+      ],
+      "responsibilities": [
+        "Work on real-world projects with mentorship from senior engineers",
+        "Write clean, maintainable code following best practices",
+        "Participate in code reviews and design discussions",
+        "Collaborate with cross-functional teams",
+        "Present project outcomes to stakeholders"
+      ],
+      "skills_required": [
+        "Docker",
+        "Azure",
+        "Python",
+        "Rust"
+      ],
+      "benefits": [
+        "Competitive salary and equity",
+        "Unlimited PTO",
+        "Gym membership",
+        "Parental leave",
+        "Free meals and snacks"
+      ],
+      "posted_date": "2026-01-28",
+      "application_deadline": "2026-02-25",
+      "is_remote": false,
+      "visa_sponsorship": false,
+      "match_score": 10,
+      "dedup_hash": "5a6417c2837fa19a05d25bd97c8e0ab6",
+      "stored_at": "2026-02-01T00:33:59.116084",
+      "status": "new"
+    },
+    {
+      "id": "2596910b-095d-49d9-bf18-4048c100cd14",
+      "title": "Software Engineer - New Grad",
+      "company": "Intel",
+      "location": "Santa Clara, CA",
+      "job_type": "full-time",
+      "experience_level": "entry",
+      "salary_range": "$90,000-130,000",
+      "description": "Intel is hiring a Software Engineer - New Grad!\n\nWe are on a mission to transform the industry, and we need exceptional engineers to help us achieve our goals. As a Software Engineer - New Grad, you will be instrumental in shaping our technical direction and building products that millions of users love.\n\nWe offer a collaborative environment where you'll learn from experienced engineers while having the autonomy to make meaningful contributions. Come join us and be part of something special!",
+      "requirements": [
+        "BS/MS in Computer Science or related field",
+        "Strong foundation in algorithms and data structures",
+        "Experience with at least one programming language",
+        "Internship experience preferred",
+        "Experience with AWS"
+      ],
+      "responsibilities": [
+        "Develop and maintain software applications",
+        "Learn and apply engineering best practices",
+        "Collaborate with team members on projects",
+        "Participate in code reviews",
+        "Contribute to technical documentation"
+      ],
+      "skills_required": [
+        "AWS",
+        "Azure",
+        "Python",
+        "Kotlin"
+      ],
+      "benefits": [
+        "Free meals and snacks",
+        "401(k) matching",
+        "Parental leave",
+        "Mental health support",
+        "Remote work flexibility"
+      ],
+      "posted_date": "2026-01-09",
+      "application_deadline": "2026-01-19",
+      "is_remote": false,
+      "visa_sponsorship": false,
+      "match_score": 10,
+      "dedup_hash": "7da68ff5613a2458c99aafaa2499412b",
+      "stored_at": "2026-02-01T00:33:59.116097",
+      "status": "new"
+    },
+    {
+      "id": "196df20a-286a-4ab6-a03f-65a816ffcc9d",
+      "title": "UI Engineer",
+      "company": "Robinhood",
+      "location": "Menlo Park, CA",
+      "job_type": "full-time",
+      "experience_level": "mid",
+      "salary_range": "$100,000-160,000",
+      "description": "Robinhood is hiring a UI Engineer!\n\nWe are on a mission to transform the industry, and we need exceptional engineers to help us achieve our goals. As a UI Engineer, you will be instrumental in shaping our technical direction and building products that millions of users love.\n\nWe offer a collaborative environment where you'll learn from experienced engineers while having the autonomy to make meaningful contributions. Come join us and be part of something special!",
+      "requirements": [
+        "3+ years of frontend development experience",
+        "Expert knowledge of React and TypeScript",
+        "Strong CSS/Tailwind skills",
+        "Experience with testing frameworks",
+        "Experience with Azure"
+      ],
+      "responsibilities": [
+        "Build responsive, accessible user interfaces",
+        "Implement complex UI components",
+        "Optimize frontend performance",
+        "Collaborate with designers and product managers",
+        "Write comprehensive tests"
+      ],
+      "skills_required": [
+        "Azure",
+        "Terraform",
+        "Python",
+        "Webpack",
+        "Vue.js",
+        "Java"
+      ],
+      "benefits": [
+        "Free meals and snacks",
+        "Health, dental, and vision insurance",
+        "Gym membership",
+        "Mental health support",
+        "Unlimited PTO"
+      ],
+      "posted_date": "2026-01-18",
+      "application_deadline": "2026-01-30",
+      "is_remote": false,
+      "visa_sponsorship": false,
+      "match_score": 10,
+      "dedup_hash": "5a4383dadd1f35e0ac16edc704f09f80",
+      "stored_at": "2026-02-01T00:33:59.116108",
+      "status": "new"
+    }
+  ],
+  "seen_hashes": [
+    "39bf6aa802c77c2951b3fdd994eb83fa",
+    "8c64a08786577188db36f856af57208e",
+    "c623d380bb64a55ff09edd1d8db4d0c7",
+    "b423b97b59f59668baafab3e8c375053",
+    "5a6417c2837fa19a05d25bd97c8e0ab6",
+    "7da68ff5613a2458c99aafaa2499412b",
+    "ec5041841c3bb9347ae79ad17478acef",
+    "5a4383dadd1f35e0ac16edc704f09f80",
+    "2a7067d9afc2ab17dfc051c7b88e8a4d"
+  ]
+}

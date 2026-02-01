@@ -1,0 +1,623 @@
+"""
+Sandbox Job Portal - Mock API for Demo
+
+A standalone FastAPI application that simulates a job portal
+with realistic job postings for testing the job application automation system.
+"""
+
+import json
+import secrets
+import uuid
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+import random
+
+from fastapi import FastAPI, HTTPException, Header, Depends
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
+
+# ============================================================
+# Configuration
+# ============================================================
+
+DATA_DIR = Path(__file__).parent / "data"
+JOBS_FILE = DATA_DIR / "jobs.json"
+APPLICATIONS_FILE = DATA_DIR / "applications.json"
+
+# Valid API keys for authentication
+VALID_API_KEYS = {
+    "sandbox_demo_key_2026",
+    "test_api_key_12345",
+    "dev_portal_key_abc",
+}
+
+# ============================================================
+# FastAPI App
+# ============================================================
+
+app = FastAPI(
+    title="Sandbox Job Portal",
+    description="Mock job portal API for testing job application automation",
+    version="1.0.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ============================================================
+# Data Models
+# ============================================================
+
+class JobPosting(BaseModel):
+    """Job posting data model."""
+    id: str
+    title: str
+    company: str
+    location: str
+    job_type: str  # full-time, internship, contract
+    experience_level: str  # entry, mid, senior
+    salary_range: Optional[str] = None
+    description: str
+    requirements: List[str]
+    responsibilities: List[str]
+    skills_required: List[str]
+    benefits: List[str]
+    posted_date: str
+    application_deadline: Optional[str] = None
+    is_remote: bool = False
+    visa_sponsorship: bool = False
+    
+class JobListItem(BaseModel):
+    """Simplified job item for list view."""
+    id: str
+    title: str
+    company: str
+    location: str
+    job_type: str
+    experience_level: str
+    salary_range: Optional[str] = None
+    posted_date: str
+    is_remote: bool
+    skills_required: List[str]
+
+class ApplicationForm(BaseModel):
+    """Application submission form."""
+    applicant_name: str
+    email: str
+    phone: Optional[str] = None
+    resume_text: str
+    cover_letter: Optional[str] = None
+    linkedin_url: Optional[str] = None
+    github_url: Optional[str] = None
+    portfolio_url: Optional[str] = None
+    work_authorization: str = Field(..., description="e.g., 'US Citizen', 'Visa Required'")
+    availability: str = Field(..., description="e.g., 'Immediately', '2 weeks notice'")
+    salary_expectation: Optional[str] = None
+    additional_info: Optional[str] = None
+
+class ApplicationResponse(BaseModel):
+    """Response after successful application submission."""
+    application_id: str
+    job_id: str
+    status: str
+    submitted_at: str
+    message: str
+
+class JobsListResponse(BaseModel):
+    """Response for job listing."""
+    jobs: List[JobListItem]
+    total: int
+    page: int
+    per_page: int
+
+# ============================================================
+# Data Persistence
+# ============================================================
+
+def _ensure_data_dir():
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+def _read_jobs() -> List[Dict[str, Any]]:
+    try:
+        if JOBS_FILE.exists():
+            with open(JOBS_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                return data.get("jobs", [])
+        return []
+    except Exception:
+        return []
+
+def _write_jobs(jobs: List[Dict[str, Any]]) -> bool:
+    try:
+        _ensure_data_dir()
+        with open(JOBS_FILE, "w", encoding="utf-8") as f:
+            json.dump({"jobs": jobs}, f, indent=2)
+        return True
+    except Exception:
+        return False
+
+def _read_applications() -> List[Dict[str, Any]]:
+    try:
+        if APPLICATIONS_FILE.exists():
+            with open(APPLICATIONS_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                return data.get("applications", [])
+        return []
+    except Exception:
+        return []
+
+def _write_applications(applications: List[Dict[str, Any]]) -> bool:
+    try:
+        _ensure_data_dir()
+        with open(APPLICATIONS_FILE, "w", encoding="utf-8") as f:
+            json.dump({"applications": applications}, f, indent=2)
+        return True
+    except Exception:
+        return False
+
+# ============================================================
+# API Key Authentication
+# ============================================================
+
+async def verify_api_key(x_api_key: str = Header(..., alias="X-API-Key")):
+    """Verify API key for protected endpoints."""
+    if x_api_key not in VALID_API_KEYS:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid API key. Use X-API-Key header with a valid key."
+        )
+    return x_api_key
+
+# ============================================================
+# API Endpoints
+# ============================================================
+
+@app.get("/")
+async def root():
+    """Sandbox portal root."""
+    return {
+        "name": "Sandbox Job Portal",
+        "version": "1.0.0",
+        "endpoints": {
+            "list_jobs": "GET /sandbox/jobs",
+            "job_details": "GET /sandbox/jobs/{id}",
+            "apply": "POST /sandbox/jobs/{id}/apply (requires X-API-Key)",
+        },
+        "demo_api_keys": list(VALID_API_KEYS),
+    }
+
+@app.get("/sandbox/jobs", response_model=JobsListResponse)
+async def list_jobs(
+    page: int = 1,
+    per_page: int = 20,
+    job_type: Optional[str] = None,
+    experience_level: Optional[str] = None,
+    is_remote: Optional[bool] = None,
+    skill: Optional[str] = None,
+):
+    """
+    List all available job postings.
+    
+    Supports filtering by job_type, experience_level, is_remote, and skill.
+    """
+    jobs = _read_jobs()
+    
+    # Apply filters
+    if job_type:
+        jobs = [j for j in jobs if j.get("job_type", "").lower() == job_type.lower()]
+    if experience_level:
+        jobs = [j for j in jobs if j.get("experience_level", "").lower() == experience_level.lower()]
+    if is_remote is not None:
+        jobs = [j for j in jobs if j.get("is_remote") == is_remote]
+    if skill:
+        jobs = [j for j in jobs if skill.lower() in [s.lower() for s in j.get("skills_required", [])]]
+    
+    # Pagination
+    total = len(jobs)
+    start = (page - 1) * per_page
+    end = start + per_page
+    paginated_jobs = jobs[start:end]
+    
+    # Convert to list items
+    job_items = [
+        JobListItem(
+            id=j["id"],
+            title=j["title"],
+            company=j["company"],
+            location=j["location"],
+            job_type=j["job_type"],
+            experience_level=j["experience_level"],
+            salary_range=j.get("salary_range"),
+            posted_date=j["posted_date"],
+            is_remote=j.get("is_remote", False),
+            skills_required=j.get("skills_required", [])[:5],  # Limit to 5 for list view
+        )
+        for j in paginated_jobs
+    ]
+    
+    return JobsListResponse(
+        jobs=job_items,
+        total=total,
+        page=page,
+        per_page=per_page,
+    )
+
+@app.get("/sandbox/jobs/{job_id}", response_model=JobPosting)
+async def get_job(job_id: str):
+    """Get detailed information about a specific job posting."""
+    jobs = _read_jobs()
+    
+    for job in jobs:
+        if job["id"] == job_id:
+            return JobPosting(**job)
+    
+    raise HTTPException(status_code=404, detail="Job not found")
+
+@app.post("/sandbox/jobs/{job_id}/apply", response_model=ApplicationResponse)
+async def apply_to_job(
+    job_id: str,
+    application: ApplicationForm,
+    api_key: str = Depends(verify_api_key),
+):
+    """
+    Submit an application to a job posting.
+    
+    Requires X-API-Key header for authentication.
+    """
+    # Verify job exists
+    jobs = _read_jobs()
+    job = next((j for j in jobs if j["id"] == job_id), None)
+    
+    if not job:
+        raise HTTPException(status_code=404, detail="Job not found")
+    
+    # Create application record
+    applications = _read_applications()
+    
+    application_record = {
+        "id": str(uuid.uuid4()),
+        "job_id": job_id,
+        "job_title": job["title"],
+        "company": job["company"],
+        "submitted_at": datetime.utcnow().isoformat(),
+        "status": "submitted",
+        "applicant": application.model_dump(),
+    }
+    
+    applications.append(application_record)
+    _write_applications(applications)
+    
+    return ApplicationResponse(
+        application_id=application_record["id"],
+        job_id=job_id,
+        status="submitted",
+        submitted_at=application_record["submitted_at"],
+        message=f"Application submitted successfully for {job['title']} at {job['company']}",
+    )
+
+@app.get("/sandbox/applications")
+async def list_applications(api_key: str = Depends(verify_api_key)):
+    """List all submitted applications (for testing/demo purposes)."""
+    return _read_applications()
+
+# ============================================================
+# Seed Data Generation
+# ============================================================
+
+# Company templates
+COMPANIES = [
+    ("Google", "Mountain View, CA"),
+    ("Meta", "Menlo Park, CA"),
+    ("Amazon", "Seattle, WA"),
+    ("Microsoft", "Redmond, WA"),
+    ("Apple", "Cupertino, CA"),
+    ("Netflix", "Los Gatos, CA"),
+    ("Stripe", "San Francisco, CA"),
+    ("Airbnb", "San Francisco, CA"),
+    ("Uber", "San Francisco, CA"),
+    ("Lyft", "San Francisco, CA"),
+    ("Spotify", "New York, NY"),
+    ("Twitter/X", "San Francisco, CA"),
+    ("LinkedIn", "Sunnyvale, CA"),
+    ("Salesforce", "San Francisco, CA"),
+    ("Adobe", "San Jose, CA"),
+    ("Nvidia", "Santa Clara, CA"),
+    ("Intel", "Santa Clara, CA"),
+    ("Qualcomm", "San Diego, CA"),
+    ("Databricks", "San Francisco, CA"),
+    ("Snowflake", "Bozeman, MT"),
+    ("Palantir", "Denver, CO"),
+    ("Coinbase", "San Francisco, CA"),
+    ("Robinhood", "Menlo Park, CA"),
+    ("Square/Block", "San Francisco, CA"),
+    ("Shopify", "Ottawa, ON (Remote)"),
+    ("Notion", "San Francisco, CA"),
+    ("Figma", "San Francisco, CA"),
+    ("Vercel", "San Francisco, CA"),
+    ("Supabase", "San Francisco, CA"),
+    ("OpenAI", "San Francisco, CA"),
+]
+
+# Role templates
+ROLE_TEMPLATES = {
+    "swe_intern": {
+        "titles": [
+            "Software Engineering Intern",
+            "SWE Intern - Summer 2026",
+            "Software Developer Intern",
+            "Engineering Intern",
+        ],
+        "experience_level": "entry",
+        "job_type": "internship",
+        "salary_range": "$40-60/hr",
+        "requirements": [
+            "Currently pursuing BS/MS in Computer Science or related field",
+            "Strong programming skills in at least one language",
+            "Understanding of data structures and algorithms",
+            "Ability to work collaboratively in a team environment",
+        ],
+    },
+    "fullstack": {
+        "titles": [
+            "Full Stack Engineer",
+            "Full Stack Developer",
+            "Software Engineer - Full Stack",
+            "Full Stack Web Developer",
+        ],
+        "experience_level": "mid",
+        "job_type": "full-time",
+        "salary_range": "$120,000-180,000",
+        "requirements": [
+            "3+ years of experience in full-stack development",
+            "Proficiency in React, Vue, or Angular",
+            "Experience with Node.js, Python, or Go backend",
+            "Strong understanding of RESTful APIs and databases",
+        ],
+    },
+    "ml_engineer": {
+        "titles": [
+            "Machine Learning Engineer",
+            "ML Engineer",
+            "AI/ML Engineer",
+            "Applied ML Scientist",
+        ],
+        "experience_level": "senior",
+        "job_type": "full-time",
+        "salary_range": "$180,000-250,000",
+        "requirements": [
+            "MS/PhD in Computer Science, ML, or related field",
+            "5+ years of experience in machine learning",
+            "Strong knowledge of PyTorch, TensorFlow, or JAX",
+            "Experience deploying ML models at scale",
+        ],
+    },
+    "frontend": {
+        "titles": [
+            "Frontend Engineer",
+            "Frontend Developer",
+            "UI Engineer",
+            "React Developer",
+        ],
+        "experience_level": "mid",
+        "job_type": "full-time",
+        "salary_range": "$100,000-160,000",
+        "requirements": [
+            "3+ years of frontend development experience",
+            "Expert knowledge of React and TypeScript",
+            "Strong CSS/Tailwind skills",
+            "Experience with testing frameworks",
+        ],
+    },
+    "backend": {
+        "titles": [
+            "Backend Engineer",
+            "Backend Developer",
+            "Server-Side Engineer",
+            "API Developer",
+        ],
+        "experience_level": "mid",
+        "job_type": "full-time",
+        "salary_range": "$120,000-170,000",
+        "requirements": [
+            "3+ years of backend development experience",
+            "Strong knowledge of Python, Go, or Java",
+            "Experience with PostgreSQL, Redis, Kafka",
+            "Understanding of distributed systems",
+        ],
+    },
+    "new_grad": {
+        "titles": [
+            "Software Engineer - New Grad",
+            "New Graduate Software Engineer",
+            "Junior Software Engineer",
+            "Associate Software Engineer",
+        ],
+        "experience_level": "entry",
+        "job_type": "full-time",
+        "salary_range": "$90,000-130,000",
+        "requirements": [
+            "BS/MS in Computer Science or related field",
+            "Strong foundation in algorithms and data structures",
+            "Experience with at least one programming language",
+            "Internship experience preferred",
+        ],
+    },
+}
+
+# Skills pools
+SKILLS = {
+    "languages": ["Python", "JavaScript", "TypeScript", "Go", "Java", "C++", "Rust", "Ruby", "Kotlin", "Swift"],
+    "frontend": ["React", "Vue.js", "Angular", "Next.js", "Tailwind CSS", "HTML/CSS", "Webpack", "Redux"],
+    "backend": ["Node.js", "FastAPI", "Django", "Flask", "Express.js", "Spring Boot", "GraphQL", "gRPC"],
+    "ml": ["PyTorch", "TensorFlow", "Scikit-learn", "Pandas", "NumPy", "Hugging Face", "LangChain", "MLflow"],
+    "data": ["PostgreSQL", "MongoDB", "Redis", "Elasticsearch", "Kafka", "Spark", "Snowflake", "BigQuery"],
+    "cloud": ["AWS", "GCP", "Azure", "Docker", "Kubernetes", "Terraform", "CI/CD"],
+}
+
+BENEFITS = [
+    "Competitive salary and equity",
+    "Health, dental, and vision insurance",
+    "Unlimited PTO",
+    "401(k) matching",
+    "Remote work flexibility",
+    "Learning and development budget",
+    "Free meals and snacks",
+    "Gym membership",
+    "Mental health support",
+    "Parental leave",
+]
+
+RESPONSIBILITIES_TEMPLATES = {
+    "swe_intern": [
+        "Work on real-world projects with mentorship from senior engineers",
+        "Write clean, maintainable code following best practices",
+        "Participate in code reviews and design discussions",
+        "Collaborate with cross-functional teams",
+        "Present project outcomes to stakeholders",
+    ],
+    "fullstack": [
+        "Design and implement end-to-end features",
+        "Build and maintain RESTful APIs",
+        "Optimize application performance and scalability",
+        "Mentor junior developers",
+        "Participate in system architecture decisions",
+    ],
+    "ml_engineer": [
+        "Design and implement machine learning models",
+        "Build data pipelines for training and inference",
+        "Deploy and monitor ML models in production",
+        "Collaborate with research scientists",
+        "Stay current with latest ML research",
+    ],
+    "frontend": [
+        "Build responsive, accessible user interfaces",
+        "Implement complex UI components",
+        "Optimize frontend performance",
+        "Collaborate with designers and product managers",
+        "Write comprehensive tests",
+    ],
+    "backend": [
+        "Design and build scalable backend services",
+        "Develop and maintain APIs",
+        "Optimize database queries and system performance",
+        "Implement security best practices",
+        "Participate in on-call rotations",
+    ],
+    "new_grad": [
+        "Develop and maintain software applications",
+        "Learn and apply engineering best practices",
+        "Collaborate with team members on projects",
+        "Participate in code reviews",
+        "Contribute to technical documentation",
+    ],
+}
+
+def generate_job_description(role_type: str, company: str, title: str) -> str:
+    """Generate a realistic job description."""
+    templates = [
+        f"""Join {company} as a {title}!
+
+We're looking for talented engineers to help us build the next generation of products. You'll work alongside world-class engineers and have the opportunity to make a significant impact.
+
+At {company}, we believe in empowering our engineers to take ownership of their work and drive innovation. This is an exciting opportunity to grow your career while working on challenging problems at scale.
+
+If you're passionate about technology and want to work with a team that values creativity and collaboration, we'd love to hear from you!""",
+
+        f"""{company} is hiring a {title}!
+
+We are on a mission to transform the industry, and we need exceptional engineers to help us achieve our goals. As a {title}, you will be instrumental in shaping our technical direction and building products that millions of users love.
+
+We offer a collaborative environment where you'll learn from experienced engineers while having the autonomy to make meaningful contributions. Come join us and be part of something special!""",
+
+        f"""Exciting opportunity at {company}!
+
+We're seeking a {title} to join our growing engineering team. You'll work on cutting-edge technology and have the chance to solve complex problems that matter.
+
+{company} is committed to creating an inclusive environment where everyone can thrive. We value diverse perspectives and believe that the best ideas come from teams with varied backgrounds and experiences.""",
+    ]
+    return random.choice(templates)
+
+def seed_jobs():
+    """Generate and seed 50+ realistic job postings."""
+    jobs = []
+    
+    role_types = list(ROLE_TEMPLATES.keys())
+    
+    for i in range(55):
+        # Pick random company and role
+        company, default_location = random.choice(COMPANIES)
+        role_type = random.choice(role_types)
+        template = ROLE_TEMPLATES[role_type]
+        
+        # Generate job details
+        title = random.choice(template["titles"])
+        is_remote = random.random() < 0.3  # 30% remote
+        location = "Remote" if is_remote else default_location
+        
+        # Generate skills based on role
+        skills = []
+        skills.extend(random.sample(SKILLS["languages"], 2))
+        if role_type in ["frontend", "fullstack"]:
+            skills.extend(random.sample(SKILLS["frontend"], 2))
+        if role_type in ["backend", "fullstack"]:
+            skills.extend(random.sample(SKILLS["backend"], 2))
+        if role_type == "ml_engineer":
+            skills.extend(random.sample(SKILLS["ml"], 3))
+        skills.extend(random.sample(SKILLS["cloud"], 2))
+        
+        # Random posted date (within last 30 days)
+        days_ago = random.randint(0, 30)
+        posted_date = (datetime.now() - timedelta(days=days_ago)).strftime("%Y-%m-%d")
+        
+        # Application deadline (7-30 days from posting)
+        deadline_days = random.randint(7, 30)
+        deadline = (datetime.now() - timedelta(days=days_ago) + timedelta(days=deadline_days)).strftime("%Y-%m-%d")
+        
+        job = {
+            "id": str(uuid.uuid4()),
+            "title": title,
+            "company": company,
+            "location": location,
+            "job_type": template["job_type"],
+            "experience_level": template["experience_level"],
+            "salary_range": template["salary_range"],
+            "description": generate_job_description(role_type, company, title),
+            "requirements": template["requirements"] + [f"Experience with {random.choice(skills)}"],
+            "responsibilities": RESPONSIBILITIES_TEMPLATES.get(role_type, RESPONSIBILITIES_TEMPLATES["fullstack"]),
+            "skills_required": list(set(skills)),
+            "benefits": random.sample(BENEFITS, 5),
+            "posted_date": posted_date,
+            "application_deadline": deadline,
+            "is_remote": is_remote,
+            "visa_sponsorship": random.random() < 0.4,  # 40% offer sponsorship
+        }
+        
+        jobs.append(job)
+    
+    _write_jobs(jobs)
+    return len(jobs)
+
+@app.post("/sandbox/seed")
+async def seed_database():
+    """Seed the database with sample job postings."""
+    count = seed_jobs()
+    return {"message": f"Successfully seeded {count} job postings"}
+
+# ============================================================
+# Startup Event
+# ============================================================
+
+@app.on_event("startup")
+async def startup_event():
+    """Seed jobs on startup if database is empty."""
+    _ensure_data_dir()
+    jobs = _read_jobs()
+    if not jobs:
+        seed_jobs()
+        print(f"Seeded database with {len(_read_jobs())} job postings")
